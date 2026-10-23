@@ -25,7 +25,7 @@ Extract every line item. For each item return: description (short, as written), 
 Use numbers only (dot as decimal separator). If only gross or net is shown, compute the others from the VAT rate on the document. Return currency as an ISO code if visible, else null. Return vendor name if visible, else null. If the image is not an invoice, return an empty items list.`;
 
 export async function analyzeInvoice(dataUrl: string, mimeType: string): Promise<InvoiceAnalysis> {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) throw new Error("AI is not configured.");
   let runId: string | undefined;
   const provider = createOpenAI({
