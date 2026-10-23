@@ -4,7 +4,7 @@ import { useMemo, useRef, useState, type ClipboardEvent } from "react";
 import { SiteShell } from "@/components/SiteShell";
 import { computeVat, type VatField } from "@/lib/vat";
 import { analyzeInvoiceFn } from "@/lib/invoice.functions";
-import type { InvoiceAnalysis } from "@/lib/invoice-ai.server";
+type InvoiceAnalysis = Awaited<ReturnType<typeof analyzeInvoiceFn>>;
 
 const title = "Gross / Net / VAT Calculator — Toolforge";
 const description = "Enter any VAT rate and get net, VAT and gross instantly — or drop an invoice screenshot to read the items automatically.";
