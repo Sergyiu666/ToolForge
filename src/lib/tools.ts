@@ -1,4 +1,4 @@
-export type Tool = { name: string; description: string; live?: boolean };
+export type Tool = { name: string; description: string; live?: boolean; href?: string };
 export type Category = {
   slug: string;
   name: string;
@@ -16,7 +16,7 @@ export const categories: Category[] = [
     tools: [
       { name: "Loan Calculator", description: "Monthly payments and amortization schedules." },
       { name: "Currency Converter", description: "Live exchange rates from public rate servers." },
-      { name: "VAT Calculator", description: "Add or remove VAT for any country rate." },
+      { name: "Gross / Net / VAT Calculator", description: "Any VAT rate, plus AI invoice reading.", live: true, href: "/tools/finance/vat-calculator" },
       { name: "Invoice Generator", description: "Create clean PDF invoices in seconds." },
     ],
   },

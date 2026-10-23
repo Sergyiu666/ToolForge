@@ -41,17 +41,24 @@ function CategoryPage() {
         </div>
       </section>
       <section className="mx-auto grid max-w-6xl gap-5 px-6 pb-28 sm:grid-cols-2 lg:grid-cols-3">
-        {category.tools.map((t) => (
-          <div key={t.name} className="card-glow rounded-2xl p-6">
-            <div className="flex items-start justify-between gap-3">
-              <h2 className="font-display text-lg font-semibold">{t.name}</h2>
-              <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground">
-                {t.live ? "Live" : "Soon"}
-              </span>
-            </div>
-            <p className="mt-2 text-sm text-muted-foreground">{t.description}</p>
-          </div>
-        ))}
+        {category.tools.map((t) => {
+          const inner = (
+            <>
+              <div className="flex items-start justify-between gap-3">
+                <h2 className="font-display text-lg font-semibold">{t.name}</h2>
+                <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground">
+                  {t.live ? "Live" : "Soon"}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">{t.description}</p>
+            </>
+          );
+          return t.href ? (
+            <a key={t.name} href={t.href} className="card-glow block rounded-2xl p-6">{inner}</a>
+          ) : (
+            <div key={t.name} className="card-glow rounded-2xl p-6">{inner}</div>
+          );
+        })}
       </section>
     </SiteShell>
   );
