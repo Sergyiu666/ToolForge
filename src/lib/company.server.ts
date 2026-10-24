@@ -7,24 +7,24 @@ const string = (value: unknown) => typeof value === 'string' || typeof value ===
 const bool = (value: unknown) => value === true || value === 'true' ? true : value === false || value === 'false' ? false : null;
 
 export function mapAnafRecord(value: unknown, checkedAt: string): Company {
-  const row = object(value), general = object(row.date_generale);
-  const social = object(row.adresa_sediu_social), fiscal = object(row.adresa_domiciliu_fiscal);
+  const row = object(value), general = object(row['date_generale']);
+  const social = object(row['adresa_sediu_social']), fiscal = object(row['adresa_domiciliu_fiscal']);
   // Keep postal code and address in the same address domain; never mix fiscal codes with headquarters.
-  const useSocial = Boolean(string(social.sdenumire_Localitate) || string(social.sdenumire_Strada));
+  const useSocial = Boolean(string(social['sdenumire_Localitate']) || string(social['sdenumire_Strada']));
   const a = useSocial ? social : fiscal, prefix = useSocial ? 's' : 'd';
   const streetName = string(a[`${prefix}denumire_Strada`]);
   const number = string(a[`${prefix}numar_Strada`]);
   const county = string(a[`${prefix}denumire_Judet`]), locality = string(a[`${prefix}denumire_Localitate`]);
   const street = [streetName, number ? `nr. ${number}` : '', string(a[`${prefix}detalii_Adresa`])].filter(Boolean).join(', ');
-  const postalCode = cleanPostalCode(a[`${prefix}cod_Postal`]) || (!useSocial ? cleanPostalCode(general.codPostal) : '');
-  const inactive = bool(object(row.stare_inactiv).statusInactivi);
+  const postalCode = cleanPostalCode(a[`${prefix}cod_Postal`]) || (!useSocial ? cleanPostalCode(general['codPostal']) : '');
+  const inactive = bool(object(row['stare_inactiv'])['statusInactivi']);
   return {
-    ...blankCompany(string(general.cui), 'found', '', checkedAt),
-    name: string(general.denumire), registry: string(general.nrRegCom),
-    fiscal: inactive === true ? 'Inactiv' : inactive === false ? 'Activ' : string(general.stare_inregistrare),
-    vat: bool(object(row.inregistrare_scop_Tva).scpTVA), cashVat: bool(object(row.inregistrare_RTVAI).statusTvaIncasare), eInvoice: bool(general.statusRO_e_Factura),
+    ...blankCompany(string(general['cui']), 'found', '', checkedAt),
+    name: string(general['denumire']), registry: string(general['nrRegCom']),
+    fiscal: inactive === true ? 'Inactiv' : inactive === false ? 'Activ' : string(general['stare_inregistrare']),
+    vat: bool(object(row['inregistrare_scop_Tva'])['scpTVA']), cashVat: bool(object(row['inregistrare_RTVAI'])['statusTvaIncasare']), eInvoice: bool(general['statusRO_e_Factura']),
     county, locality, street,
-    address: useSocial ? [street, locality, county, string(a.stara)].filter(Boolean).join(', ') : string(general.adresa) || [street, locality, county].filter(Boolean).join(', '),
+    address: useSocial ? [street, locality, county, string(a['stara'])].filter(Boolean).join(', ') : string(general['adresa']) || [street, locality, county].filter(Boolean).join(', '),
     postalCode, postalSource: postalCode ? 'ANAF' : '', postalStatus: postalCode ? 'verified' : 'missing',
   };
 }
@@ -40,8 +40,8 @@ export async function enrichPostal(company: Company, streetName: string, number:
     });
     if (!response.ok) throw new Error('Postal source unavailable');
     const payload = object(await response.json());
-    if (typeof payload.formular !== 'string') throw new Error('Invalid postal response');
-    const candidates = parsePostalHtml(payload.formular);
+    if (typeof payload['formular'] !== 'string') throw new Error('Invalid postal response');
+    const candidates = parsePostalHtml(payload['formular']);
     const match = matchPostal(candidates, county, locality, streetName, number);
     return { ...company, postalCode: match.code, postalSource: match.code ? 'Poșta Română' : '', postalStatus: match.code ? 'verified' : match.ambiguous ? 'ambiguous' : 'missing' };
   } catch {
@@ -58,22 +58,22 @@ export async function lookupCompanies(cuis: string[], date: string, postal: bool
     });
     if (!response.ok) throw new Error(`ANAF HTTP ${response.status}`);
     payload = object(await response.json());
-    if (Number(payload.cod) !== 200 || !Array.isArray(payload.found)) throw new Error('ANAF invalid response');
+    if (Number(payload['cod']) !== 200 || !Array.isArray(payload['found'])) throw new Error('ANAF invalid response');
   } catch (e) {
     console.error('ANAF lookup failed', e instanceof Error ? e.message : 'Fetch failure');
     return cuis.map(cui => blankCompany(cui, 'error', 'ANAF could not be reached. Please retry; no company data has been inferred.', checkedAt));
   }
   const found = new Map<string, RecordData>();
-  for (const value of payload.found as unknown[]) { const row = object(value); found.set(string(object(row.date_generale).cui), row); }
-  const notFound = new Set(Array.isArray(payload.notFound) ? payload.notFound.map(string) : []);
+  for (const value of payload['found'] as unknown[]) { const row = object(value); found.set(string(object(row['date_generale'])['cui']), row); }
+  const notFound = new Set(Array.isArray(payload['notFound']) ? payload['notFound'].map(string) : []);
   const companies: Company[] = [];
   for (const cui of cuis) {
     const row = found.get(cui);
     if (!row) { companies.push(blankCompany(cui, notFound.has(cui) ? 'not-found' : 'error', notFound.has(cui) ? 'CUI not found in ANAF records.' : 'ANAF did not return this CUI. Retry the lookup.', checkedAt)); continue; }
     let company = mapAnafRecord(row, checkedAt);
     if (postal && !company.postalCode) {
-      const social = object(row.adresa_sediu_social), fiscal = object(row.adresa_domiciliu_fiscal);
-      const socialUsed = Boolean(string(social.sdenumire_Localitate) || string(social.sdenumire_Strada));
+      const social = object(row['adresa_sediu_social']), fiscal = object(row['adresa_domiciliu_fiscal']);
+      const socialUsed = Boolean(string(social['sdenumire_Localitate']) || string(social['sdenumire_Strada']));
       const a = socialUsed ? social : fiscal, p = socialUsed ? 's' : 'd';
       company = await enrichPostal(company, string(a[`${p}denumire_Strada`]), string(a[`${p}numar_Strada`]));
     }
