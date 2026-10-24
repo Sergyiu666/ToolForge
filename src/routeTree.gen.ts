@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
+import { Route as ToolsFinanceCompanyLookupRouteImport } from './routes/tools.finance.company-lookup'
 import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.finance.vat-calculator'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,12 @@ const ToolsCategoryRoute = ToolsCategoryRouteImport.update({
   path: '/tools/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsFinanceCompanyLookupRoute =
+  ToolsFinanceCompanyLookupRouteImport.update({
+    id: '/tools/finance/company-lookup',
+    path: '/tools/finance/company-lookup',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ToolsFinanceVatCalculatorRoute =
   ToolsFinanceVatCalculatorRouteImport.update({
     id: '/tools/finance/vat-calculator',
@@ -33,30 +40,47 @@ const ToolsFinanceVatCalculatorRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
+  '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
+  '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
+  '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tools/$category' | '/tools/finance/vat-calculator'
+  fullPaths:
+    | '/'
+    | '/tools/$category'
+    | '/tools/finance/company-lookup'
+    | '/tools/finance/vat-calculator'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tools/$category' | '/tools/finance/vat-calculator'
-  id: '__root__' | '/' | '/tools/$category' | '/tools/finance/vat-calculator'
+  to:
+    | '/'
+    | '/tools/$category'
+    | '/tools/finance/company-lookup'
+    | '/tools/finance/vat-calculator'
+  id:
+    | '__root__'
+    | '/'
+    | '/tools/$category'
+    | '/tools/finance/company-lookup'
+    | '/tools/finance/vat-calculator'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ToolsCategoryRoute: typeof ToolsCategoryRoute
+  ToolsFinanceCompanyLookupRoute: typeof ToolsFinanceCompanyLookupRoute
   ToolsFinanceVatCalculatorRoute: typeof ToolsFinanceVatCalculatorRoute
 }
 
@@ -76,6 +100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/finance/company-lookup': {
+      id: '/tools/finance/company-lookup'
+      path: '/tools/finance/company-lookup'
+      fullPath: '/tools/finance/company-lookup'
+      preLoaderRoute: typeof ToolsFinanceCompanyLookupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/finance/vat-calculator': {
       id: '/tools/finance/vat-calculator'
       path: '/tools/finance/vat-calculator'
@@ -89,6 +120,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ToolsCategoryRoute: ToolsCategoryRoute,
+  ToolsFinanceCompanyLookupRoute: ToolsFinanceCompanyLookupRoute,
   ToolsFinanceVatCalculatorRoute: ToolsFinanceVatCalculatorRoute,
 }
 export const routeTree = rootRouteImport
