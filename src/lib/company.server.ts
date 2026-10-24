@@ -52,7 +52,7 @@ export async function lookupCompanies(cuis: string[], date: string, postal: bool
   const checkedAt = new Date().toISOString();
   let payload: RecordData;
   try {
-    const response = await fetch('https://webservicesp.anaf.ro/PlatitorTvaRest/api/v8/ws/tva', {
+    const response = await fetch('https://webservicesp.anaf.ro/api/PlatitorTvaRest/v9/tva', {
       method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(cuis.map(cui => ({ cui: Number(cui), data: date }))), signal: AbortSignal.timeout(25000),
     });

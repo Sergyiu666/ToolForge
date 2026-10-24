@@ -9,3 +9,6 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Tool catalog lives in src/lib/tools.ts; each category renders at /tools/$category (single data source keeps nav and pages in sync).
+- Company lookup uses public read-only server functions for official registries, processes bounded batches, and keeps imported lists and results in page state to avoid storing user files unnecessarily.
+- Postal enrichment must match county, locality, street and number ranges against official candidates; unresolved or ambiguous addresses remain flagged rather than guessed.
+- Spreadsheet parsing and exports load SheetJS only in browser event handlers; exported registry strings are sanitized to prevent formula injection.
