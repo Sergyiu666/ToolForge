@@ -16,6 +16,7 @@ export const categories: Category[] = [
     tools: [
       { name: "Loan Calculator", description: "Monthly payments and amortization schedules." },
       { name: "Currency Converter", description: "Live exchange rates from public rate servers." },
+      { name: "ANAF Company Lookup", description: "Bulk CUI lookup, VAT status and official postal codes.", live: true, href: "/tools/finance/company-lookup" },
       { name: "Gross / Net / VAT Calculator", description: "Any VAT rate, plus AI invoice reading.", live: true, href: "/tools/finance/vat-calculator" },
       { name: "Invoice Generator", description: "Create clean PDF invoices in seconds." },
     ],
