@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Building2, Search, Upload, FileSpreadsheet, Download, ArrowUpRight, Loader2, X, ShieldCheck, MapPin, ChevronRight, Square } from 'lucide-react';
+import { Building2, Search, Upload, FileSpreadsheet, Download, ArrowUpRight, Loader2, ShieldCheck, MapPin, ChevronRight, Square } from 'lucide-react';
 import { SiteShell } from '@/components/SiteShell';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -55,9 +55,11 @@ function CompanyLookup() {
       const book = XLSX.read(await file.arrayBuffer(), { type: 'array', sheetRows: 10002 });
       const first = book.SheetNames[0];
       if (!first) throw new Error('No worksheet');
-      const table = XLSX.utils.sheet_to_json<string[]>(book.Sheets[first], { header: 1, raw: false, defval: '' }).map(row => row.map(String)).filter(row => row.some(Boolean));
+      const worksheet = book.Sheets[first];
+      if (!worksheet) throw new Error('No worksheet');
+      const table = XLSX.utils.sheet_to_json<string[]>(worksheet, { header: 1, raw: false, defval: '' }).map(row => row.map(String)).filter(row => row.some(Boolean));
       if (!table.length) throw new Error('Empty worksheet');
-      const detected = table[0].findIndex(v => /^(cui|cif|cod fiscal|vat|tax id)(\b|$)/i.test(v.trim()));
+      const detected = table[0]?.findIndex(v => /^(cui|cif|cod fiscal|vat|tax id)(\b|$)/i.test(v.trim())) ?? -1;
       setColumn(detected >= 0 ? detected : 0); setHasHeader(detected >= 0); setFileName(file.name); setSheet(table);
     } catch { setError('This spreadsheet could not be read. Check the file and try again.'); }
   }
