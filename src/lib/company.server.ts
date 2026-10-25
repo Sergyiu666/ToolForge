@@ -58,7 +58,8 @@ export async function lookupCompanies(cuis: string[], date: string, postal: bool
     });
     if (!response.ok) throw new Error(`ANAF HTTP ${response.status}`);
     payload = object(await response.json());
-    if (Number(payload['cod']) !== 200 || !Array.isArray(payload['found'])) throw new Error('ANAF invalid response');
+    // V9 returns found/notFound without the older cod field on successful replies.
+    if ((payload['cod'] !== undefined && Number(payload['cod']) !== 200) || !Array.isArray(payload['found'])) throw new Error('ANAF invalid response');
   } catch (e) {
     console.error('ANAF lookup failed', e instanceof Error ? e.message : 'Fetch failure');
     return cuis.map(cui => blankCompany(cui, 'error', 'ANAF could not be reached. Please retry; no company data has been inferred.', checkedAt));
