@@ -19,6 +19,6 @@ it('does not mix fiscal postal codes with the registered headquarters address', 
 });
 
 it('keeps invalid registry replies unavailable instead of inventing company details', async () => {
-  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ cod: 500, found: [] }))));
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ status: 400, error: 'Bad Request' }))));
   expect((await lookupCompanies(['14399840'], '2026-10-25', false))[0]).toMatchObject({ status: 'error', name: '', postalCode: '' });
 });
