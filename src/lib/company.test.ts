@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { blankCompany, cleanPostalCode, exportRows, MAX_COMPANIES, parseCuis, safeSpreadsheetValue } from './company';
+import { blankCompany, cleanPostalCode, exportRows, MAX_COMPANIES, parseCuis, safeSpreadsheetValue, validLookupDate } from './company';
 describe('bulk company input', () => {
+  it('rejects impossible calendar dates and future lookups', () => {
+    expect(validLookupDate('2024-02-31', '2026-10-25')).toBe(false);
+    expect(validLookupDate('2026-10-26', '2026-10-25')).toBe(false);
+    expect(validLookupDate('2024-02-29', '2026-10-25')).toBe(true);
+  });
   it('normalizes RO prefixes and separators and removes duplicates', () => {
     expect(parseCuis('RO14399840, 1590082;14399840\nRO1590082')).toMatchObject({ cuis: ['14399840', '1590082'], duplicates: 2, invalid: [] });
   });
