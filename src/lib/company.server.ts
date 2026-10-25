@@ -1,5 +1,4 @@
 import { blankCompany, cleanPostalCode, type Company } from './company';
-import { matchPostal, normalizeAddress, parsePostalHtml } from './company-postal';
 
 type RecordData = Record<string, unknown>;
 const object = (value: unknown): RecordData => value && typeof value === 'object' && !Array.isArray(value) ? value as RecordData : {};
@@ -28,27 +27,7 @@ export function mapAnafRecord(value: unknown, checkedAt: string): Company {
     postalCode, postalSource: postalCode ? 'ANAF' : '', postalStatus: postalCode ? 'verified' : 'missing',
   };
 }
-export async function enrichPostal(company: Company, streetName: string, number: string): Promise<Company> {
-  if (company.postalCode || !company.county || !company.locality || !streetName) return company;
-  const bucharest = normalizeAddress(company.county).includes('bucure');
-  const county = bucharest ? 'Bucuresti' : company.county;
-  const locality = bucharest ? 'Bucuresti' : company.locality;
-  try {
-    const response = await fetch('https://www.posta-romana.ro/cnpr-app/modules/cauta-cod-postal/ajax/cautare_pentru_cod.php?q=', {
-      method: 'POST', body: new URLSearchParams({ k_adresa: streetName, k_judet: county, k_localitate: locality, k_lang: 'ro' }),
-      signal: AbortSignal.timeout(12000),
-    });
-    if (!response.ok) throw new Error('Postal source unavailable');
-    const payload = object(await response.json());
-    if (typeof payload['formular'] !== 'string') throw new Error('Invalid postal response');
-    const candidates = parsePostalHtml(payload['formular']);
-    const match = matchPostal(candidates, county, locality, streetName, number);
-    return { ...company, postalCode: match.code, postalSource: match.code ? 'Poșta Română' : '', postalStatus: match.code ? 'verified' : match.ambiguous ? 'ambiguous' : 'missing' };
-  } catch {
-    return { ...company, postalStatus: 'unavailable' };
-  }
-}
-export async function lookupCompanies(cuis: string[], date: string, postal: boolean) {
+export async function lookupCompanies(cuis: string[], date: string) {
   const checkedAt = new Date().toISOString();
   let payload: RecordData;
   try {
@@ -71,14 +50,7 @@ export async function lookupCompanies(cuis: string[], date: string, postal: bool
   for (const cui of cuis) {
     const row = found.get(cui);
     if (!row) { companies.push(blankCompany(cui, notFound.has(cui) ? 'not-found' : 'error', notFound.has(cui) ? 'CUI not found in ANAF records.' : 'ANAF did not return this CUI. Retry the lookup.', checkedAt)); continue; }
-    let company = mapAnafRecord(row, checkedAt);
-    if (postal && !company.postalCode) {
-      const social = object(row['adresa_sediu_social']), fiscal = object(row['adresa_domiciliu_fiscal']);
-      const socialUsed = Boolean(string(social['sdenumire_Localitate']) || string(social['sdenumire_Strada']));
-      const a = socialUsed ? social : fiscal, p = socialUsed ? 's' : 'd';
-      company = await enrichPostal(company, string(a[`${p}denumire_Strada`]), string(a[`${p}numar_Strada`]));
-    }
-    companies.push(company);
+    companies.push(mapAnafRecord(row, checkedAt));
   }
   return companies;
 }

@@ -7,7 +7,7 @@ it('accepts successful ANAF v9 replies without the legacy status field', async (
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({
     found: [{ date_generale: { cui: 14399840, denumire: 'DANTE INTERNATIONAL SA' }, inregistrare_scop_Tva: { scpTVA: true } }], notFound: [160796],
   }))));
-  const result = await lookupCompanies(['14399840', '160796'], '2026-10-25', false);
+  const result = await lookupCompanies(['14399840', '160796'], '2026-10-25');
   expect(result[0]).toMatchObject({ cui: '14399840', status: 'found', name: 'DANTE INTERNATIONAL SA', vat: true });
   expect(result[1]).toMatchObject({ cui: '160796', status: 'not-found' });
 });
@@ -20,5 +20,5 @@ it('does not mix fiscal postal codes with the registered headquarters address', 
 
 it('keeps invalid registry replies unavailable instead of inventing company details', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ status: 400, error: 'Bad Request' }))));
-  expect((await lookupCompanies(['14399840'], '2026-10-25', false))[0]).toMatchObject({ status: 'error', name: '', postalCode: '' });
+  expect((await lookupCompanies(['14399840'], '2026-10-25'))[0]).toMatchObject({ status: 'error', name: '', postalCode: '' });
 });

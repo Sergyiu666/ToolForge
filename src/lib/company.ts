@@ -9,7 +9,7 @@ export type Company = {
   cui: string; name: string; registry: string; fiscal: string;
   vat: boolean | null; cashVat: boolean | null; eInvoice: boolean | null;
   county: string; locality: string; street: string; address: string;
-  postalCode: string; postalSource: 'ANAF' | 'Poșta Română' | '';
+  postalCode: string; postalSource: 'ANAF' | 'Manual' | '';
   postalStatus: 'verified' | 'missing' | 'ambiguous' | 'unavailable';
   status: 'found' | 'not-found' | 'error'; message: string; checkedAt: string;
 };
