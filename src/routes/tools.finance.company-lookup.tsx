@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { lookupCompaniesFn } from '@/lib/company.functions';
-import { exportRows, MAX_COMPANIES, parseCuis, POSTAL_SOURCE_URL, safeSpreadsheetValue, type Company } from '@/lib/company';
+import { exportRows, MAX_COMPANIES, parseCuis, POSTAL_SOURCE_URL, safeSpreadsheetValue, validLookupDate, type Company } from '@/lib/company';
 
 const title = 'ANAF Bulk Company Lookup — Toolforge';
 const description = 'Look up Romanian companies by CUI, check VAT and addresses, resolve missing postal codes from Poșta Română, and export CSV or Excel.';
@@ -65,6 +65,8 @@ function CompanyLookup() {
   }
   async function search(cuis = parsed.cuis) {
     if (!cuis.length || cuis.length > MAX_COMPANIES || !date) return;
+    if (!validLookupDate(date)) { setError('Choose a valid lookup date, today or earlier.'); return; }
+    setFilter('all'); setQuery(''); setSelected(null);
     setError(''); setRunning(true); setRows([]); stopRef.current = false;
     setProgress({ done: 0, total: cuis.length });
     let accumulated: Company[] = [];
@@ -75,6 +77,7 @@ function CompanyLookup() {
         accumulated = [...accumulated, ...batch];
         setRows(accumulated); setProgress({ done: accumulated.length, total: cuis.length });
         if (batch.every(r => r.status === 'error')) { setError('ANAF is unavailable. Your CUIs are unchanged; retry when the service is back.'); break; }
+        if (stopRef.current) break;
         if (i + 10 < cuis.length) await new Promise(resolve => setTimeout(resolve, 1100));
       }
     } catch { setError('The lookup was interrupted. Completed results are still available; you can retry.'); }
@@ -89,7 +92,7 @@ function CompanyLookup() {
       if (format === 'xlsx') { const book = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(book, sheet, 'Companies'); XLSX.writeFile(book, `anaf-companies-${date}.xlsx`); }
       else {
         const url = URL.createObjectURL(new Blob(['\uFEFF', XLSX.utils.sheet_to_csv(sheet)], { type: 'text/csv;charset=utf-8' }));
-        const a = document.createElement('a'); a.href = url; a.download = `anaf-companies-${date}.csv`; a.click(); URL.revokeObjectURL(url);
+        const a = document.createElement('a'); a.href = url; a.download = `anaf-companies-${date}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
     } catch { setError('The export failed. Please try again.'); }
     finally { setExporting(false); }

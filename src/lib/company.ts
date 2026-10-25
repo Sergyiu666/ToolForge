@@ -1,5 +1,10 @@
 export const MAX_COMPANIES = 500;
 export const POSTAL_SOURCE_URL = 'https://www.posta-romana.ro/cauta-cod-postal.html';
+export function validLookupDate(value: string, today = new Date().toISOString().slice(0, 10)) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value > today) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
 export type Company = {
   cui: string; name: string; registry: string; fiscal: string;
   vat: boolean | null; cashVat: boolean | null; eInvoice: boolean | null;

@@ -19,10 +19,18 @@ export function matchPostal(candidates: PostalCandidate[], county: string, local
     const n = Number(number);
     const exact = range.trim().match(/^(\d+)$/);
     if (exact) return n === Number(exact[1]);
-    const span = range.trim().match(/^(\d+)\s*-\s*(\d+)$/);
-    if (!span) return false;
-    const start = Number(span[1]), end = Number(span[2]);
-    return n >= start && n <= end && (start % 2 !== end % 2 || n % 2 === start % 2);
+    // Official results include multiple sides (1-73; 2-6) and T = terminal.
+    const spans = range.trim().split(/\s*;\s*/).map(part => part.match(/^(\d+)\s*-\s*(\d+|T)$/i));
+    if (spans.some(span => !span)) return false;
+    return spans.some(span => {
+      if (!span) return false;
+      const start = Number(span[1]);
+      const terminal = span[2]?.toUpperCase() === 'T';
+      const end = terminal ? Infinity : Number(span[2]);
+      // Mixed-parity finite endpoints do not establish a safe address side.
+      if (!terminal && start % 2 !== end % 2) return false;
+      return n >= start && n <= end && n % 2 === start % 2;
+    });
   });
   const codes = [...new Set(matches.map(c => c.code))];
   return { code: codes.length === 1 ? codes[0] ?? '' : '', ambiguous: codes.length > 1 || (candidates.length > 0 && codes.length === 0) };
