@@ -1,6 +1,6 @@
 import { cleanPostalCode } from './company';
 export type PostalCandidate = { code: string; county: string; locality: string; street: string };
-export const normalizeAddress = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[şș]/g, 's').replace(/[ţț]/g, 't').toLowerCase().replace(/\b(strada|str\.?|municipiul|mun\.?|judetul|jud\.?)\s*/g, '').replace(/\bsos\.?\s*/g, 'soseaua ').replace(/[^a-z0-9]+/g, ' ').trim();
+export const normalizeAddress = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[şș]/g, 's').replace(/[ţț]/g, 't').toLowerCase().replace(/\b(strada|str|municipiul|mun|judetul|jud)(?:\.\s*|\s+|$)/g, '').replace(/\bsos(?:\.\s*|\s+|$)/g, 'soseaua ').replace(/[^a-z0-9]+/g, ' ').trim();
 const text = (s: string) => s.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n))).trim();
 export function parsePostalHtml(html: string): PostalCandidate[] {
   return html.split(/<div[^>]*class="[^"]*cod-postal-line[^"]*"[^>]*>/).slice(1).flatMap(row => {
