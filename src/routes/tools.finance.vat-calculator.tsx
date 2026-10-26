@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useRef, useState, type ClipboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type ClipboardEvent } from "react";
+import { getInitialVatRate } from "@/config/rates";
 import { SiteShell } from "@/components/SiteShell";
 import { computeVat, type VatField } from "@/lib/vat";
 import { analyzeInvoiceFn } from "@/lib/invoice.functions";
@@ -26,7 +27,8 @@ export const Route = createFileRoute("/tools/finance/vat-calculator")({
 const fmt = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 function VatPage() {
-  const [rate, setRate] = useState("21");
+  const [rate, setRate] = useState("");
+  useEffect(() => { setRate(getInitialVatRate(new Date().toISOString().slice(0, 10))); }, []);
   const [field, setField] = useState<VatField>("net");
   const [amount, setAmount] = useState("");
 
