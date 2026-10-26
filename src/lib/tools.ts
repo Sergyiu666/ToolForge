@@ -1,4 +1,4 @@
-export type Tool = { name: string; description: string; live?: boolean; href?: string };
+export type Tool = { name: string; description: string; live?: boolean; href?: "/tools/finance/company-lookup" | "/tools/finance/vat-calculator" };
 export type Category = {
   slug: string;
   name: string;
@@ -43,18 +43,6 @@ export const categories: Category[] = [
       { name: "Discount Calculator", description: "Stacked discounts and final prices." },
       { name: "Company Lookup", description: "Fetch company data from public registries." },
       { name: "Commission Calculator", description: "Tiered commission payouts." },
-    ],
-  },
-  {
-    slug: "utilities",
-    name: "Everyday Utilities",
-    tagline: "Quick helpers for text, numbers and data.",
-    icon: "⌘",
-    tools: [
-      { name: "Unit Converter", description: "Length, weight, temperature and more." },
-      { name: "Word Counter", description: "Words, characters and reading time." },
-      { name: "QR Code Generator", description: "Turn any link into a QR code." },
-      { name: "Password Generator", description: "Strong random passwords." },
     ],
   },
 ];

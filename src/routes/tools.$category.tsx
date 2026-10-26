@@ -54,7 +54,7 @@ function CategoryPage() {
             </>
           );
           return t.href ? (
-            <a key={t.name} href={t.href} className="card-glow block rounded-2xl p-6">{inner}</a>
+            <Link key={t.name} to={t.href} className="card-glow block rounded-2xl p-6">{inner}</Link>
           ) : (
             <div key={t.name} className="card-glow rounded-2xl p-6">{inner}</div>
           );
