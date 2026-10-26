@@ -1,14 +1,20 @@
-# Welcome to your Lovable project
+# Theonlytoolulleverneed
+
+I would like to start building a website which will have multiple tools ready for anyone to use, simple stuff but also more complicated stuff which normally would require API interrogations from specific servers.
+
+Firstly from a design standpoint, it should be purple-blue and black with white accents, it should have multiple sections for different types of tools such as Finance/Accounting, HR, Sales even.
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://theonlytoolulleverneed.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/92b8322f-3691-48ac-83b8-f4d0d0beb1d8).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +26,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
