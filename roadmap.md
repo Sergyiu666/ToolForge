@@ -1,6 +1,5 @@
-# Company lookup
-- [x] Verify official ANAF and postal sources.
-- [x] Build CUI paste and CSV/Excel imports with validation.
-- [x] Implement live company lookup and safe official postal enrichment.
-- [x] Add results, detail view, CSV/Excel exports and catalog link.
-- [x] Test real lookup, file import, export and responsive layouts.
+# Navigation and shared rates
+- [ ] Limit catalog and home cards to Finance & Accounting, HR, Sales; list tools in shared navigation.
+- [ ] Centralize existing Romanian tax defaults with dated sets and explicit TODO placeholders.
+- [ ] Connect existing calculator without changing manual VAT behavior.
+- [ ] Test date selection, navigation, and calculator behavior.
