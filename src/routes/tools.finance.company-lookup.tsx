@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Building2, Search, Upload, FileSpreadsheet, Download, ArrowUpRight, Loader2, ShieldCheck, MapPin, ChevronRight, Square } from 'lucide-react';
+import { Building2, Search, Upload, FileSpreadsheet, Download, ArrowUpRight, Loader2, ShieldCheck, MapPin, ChevronRight, Square, Copy } from 'lucide-react';
 import { SiteShell } from '@/components/SiteShell';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { toast } from 'sonner';
 import { lookupCompaniesFn } from '@/lib/company.functions';
 import { exportRows, MAX_COMPANIES, parseCuis, POSTAL_SOURCE_URL, safeSpreadsheetValue, validLookupDate, type Company } from '@/lib/company';
 
@@ -24,7 +24,6 @@ function CompanyLookup() {
   const lookup = useServerFn(lookupCompaniesFn);
   const [input, setInput] = useState('');
   const [date, setDate] = useState('');
-  const [postal, setPostal] = useState(true);
   const [rows, setRows] = useState<Company[]>([]);
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
@@ -36,6 +35,7 @@ function CompanyLookup() {
   const [sheet, setSheet] = useState<string[][] | null>(null);
   const [column, setColumn] = useState(0);
   const [hasHeader, setHasHeader] = useState(true);
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [exporting, setExporting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const stopRef = useRef(false);
@@ -67,13 +67,13 @@ function CompanyLookup() {
     if (!cuis.length || cuis.length > MAX_COMPANIES || !date) return;
     if (!validLookupDate(date)) { setError('Choose a valid lookup date, today or earlier.'); return; }
     setFilter('all'); setQuery(''); setSelected(null);
-    setError(''); setRunning(true); setRows([]); stopRef.current = false;
+    setError(''); setRunning(true); setRows([]); setDrafts({}); stopRef.current = false;
     setProgress({ done: 0, total: cuis.length });
     let accumulated: Company[] = [];
     try {
       for (let i = 0; i < cuis.length; i += 10) {
         if (stopRef.current) break;
-        const batch = await lookup({ data: { cuis: cuis.slice(i, i + 10), date, postal } });
+        const batch = await lookup({ data: { cuis: cuis.slice(i, i + 10), date } });
         accumulated = [...accumulated, ...batch];
         setRows(accumulated); setProgress({ done: accumulated.length, total: cuis.length });
         if (batch.every(r => r.status === 'error')) { setError('ANAF is unavailable. Your CUIs are unchanged; retry when the service is back.'); break; }
@@ -82,6 +82,17 @@ function CompanyLookup() {
       }
     } catch { setError('The lookup was interrupted. Completed results are still available; you can retry.'); }
     finally { setRunning(false); }
+  }
+  function setPostalCode(cui: string, value: string) {
+    const code = value.replace(/\D/g, '').slice(0, 6);
+    setDrafts(d => ({ ...d, [cui]: code }));
+    const valid = /^\d{6}$/.test(code) && code !== '000000';
+    setRows(rs => rs.map(r => r.cui === cui && r.postalSource !== 'ANAF' ? { ...r, postalCode: valid ? code : '', postalSource: valid ? 'Manual' : '', postalStatus: valid ? 'verified' : 'missing' } : r));
+  }
+  async function findPostal(c: Company) {
+    window.open(POSTAL_SOURCE_URL, '_blank', 'noopener,noreferrer');
+    try { await navigator.clipboard.writeText(c.address || [c.street, c.locality, c.county].filter(Boolean).join(', ')); toast.success('Address copied — paste it into the Poșta Română search'); }
+    catch { toast.error('Could not copy the address. Copy it from the company details.'); }
   }
   async function download(format: 'csv' | 'xlsx') {
     setExporting(true); setError('');
@@ -113,12 +124,12 @@ function CompanyLookup() {
         </div>
         <div className="flex flex-col gap-5"><div onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); const file = e.dataTransfer.files[0]; if (file && !running) void readFile(file); }} className="flex flex-1 flex-col items-center justify-center gap-3 rounded-lg border border-dashed bg-card/40 px-5 py-6 text-center"><Upload className="size-6 text-primary" /><Button variant="outline" disabled={running} onClick={() => fileRef.current?.click()}>Import company list</Button><span className="text-xs text-muted-foreground">Drop CSV, XLSX or XLS · up to 10 MB</span><input aria-label="Upload company list" ref={fileRef} type="file" accept=".csv,.xlsx,.xls" className="hidden" onChange={e => { const file = e.target.files?.[0]; if (file) void readFile(file); e.target.value = ''; }} /></div><label className="flex items-center justify-between gap-3 text-sm" htmlFor="lookup-date">Lookup date<Input id="lookup-date" type="date" value={date} onChange={e => setDate(e.target.value)} disabled={running} className="w-40 rounded-md" /></label></div>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-4 border-y py-5"><div className="flex items-center gap-3"><Switch id="resolve-postal" checked={postal} onCheckedChange={setPostal} disabled={running} /><label htmlFor="resolve-postal" className="text-sm"><span className="block font-medium">Resolve missing postal codes</span><span className="text-xs text-muted-foreground">Poșta Română · exact matches only; uncertain addresses stay flagged</span></label></div><div className="flex gap-2">{running ? <Button variant="outline" onClick={() => { stopRef.current = true; }}><Square />Stop after this batch</Button> : null}<Button size="lg" disabled={running || !parsed.cuis.length || parsed.overLimit || !date} onClick={() => void search()}>{running ? <Loader2 className="animate-spin" /> : <Search />}{running ? `${progress.done} / ${progress.total}` : 'Look up companies'}</Button></div></div>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-y py-5"><p className="text-xs text-muted-foreground">Missing postal codes can be found on Poșta Română and typed into the results table.</p><div className="flex gap-2">{running ? <Button variant="outline" onClick={() => { stopRef.current = true; }}><Square />Stop after this batch</Button> : null}<Button size="lg" disabled={running || !parsed.cuis.length || parsed.overLimit || !date} onClick={() => void search()}>{running ? <Loader2 className="animate-spin" /> : <Search />}{running ? `${progress.done} / ${progress.total}` : 'Look up companies'}</Button></div></div>
       {error && <p role="alert" className="mt-4 rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">{error}</p>}
       <section className="mt-9">
         <div className="mb-6 grid grid-cols-3 divide-x border-b pb-6">{[['Companies found', found], ['Postal codes resolved', resolved], ['Need review', review]].map(([label, n]) => <div key={label} className="px-3 first:pl-0"><div className="font-display text-3xl font-semibold">{n}</div><div className="mt-1 text-xs text-muted-foreground">{label}</div></div>)}</div>
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><h2 className="font-display text-xl font-semibold">Results <span className="ml-2 text-sm font-normal text-muted-foreground">{filtered.length ? `${filtered.length} companies` : ''}</span></h2><div className="flex gap-2"><Button variant="outline" size="sm" disabled={!filtered.length || exporting || running} onClick={() => void download('csv')}><Download />CSV</Button><Button variant="outline" size="sm" disabled={!filtered.length || exporting || running} onClick={() => void download('xlsx')}><FileSpreadsheet />Excel</Button></div></div>
-        {rows.length > 0 ? <><div className="mb-4 flex flex-wrap justify-between gap-3"><div className="flex gap-1" role="group" aria-label="Result filter">{[['all', 'All'], ['vat', 'VAT payers'], ['review', 'Needs review']].map(([value, label]) => <Button key={value} size="sm" variant={filter === value ? 'secondary' : 'ghost'} onClick={() => setFilter(value ?? 'all')}>{label}</Button>)}</div><Input aria-label="Search results" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search name, CUI, city…" className="w-full rounded-md sm:w-64" /></div><div className="overflow-x-auto rounded-lg border"><table className="w-full min-w-[850px] text-left text-sm"><thead className="bg-secondary/50 text-xs text-muted-foreground"><tr>{['Company / CUI', 'VAT payer', 'County / Locality', 'Street & number', 'Postal code', ''].map((h, i) => <th key={i} className="px-4 py-3 font-medium">{h}</th>)}</tr></thead><tbody>{filtered.map(c => <tr key={c.cui} className="border-t hover:bg-muted/40"><td className="max-w-64 px-4 py-4"><Button variant="link" className="h-auto max-w-60 whitespace-normal p-0 text-left text-foreground" onClick={() => setSelected(c)}>{c.name || (c.status === 'error' ? 'Lookup unavailable' : 'Company not found')}</Button><div className="mt-1 font-mono text-xs text-muted-foreground">{c.cui}</div></td><td className="px-4 py-4"><span className={c.vat ? 'text-primary' : 'text-muted-foreground'}>{flag(c.vat)}</span></td><td className="px-4 py-4">{c.county || '—'}<div className="text-xs text-muted-foreground">{c.locality}</div></td><td className="max-w-60 px-4 py-4 text-muted-foreground">{c.street || '—'}</td><td className="px-4 py-4"><div className="font-mono">{c.postalCode || '—'}</div><div className={`mt-1 text-xs ${c.postalCode ? 'text-primary' : 'text-muted-foreground'}`}>{postalLabel(c)}</div></td><td className="px-2"><Button variant="ghost" size="icon" aria-label={`Details for ${c.cui}`} onClick={() => setSelected(c)}><ChevronRight /></Button></td></tr>)}</tbody></table>{!filtered.length && <p className="p-8 text-center text-sm text-muted-foreground">No companies match this filter.</p>}</div></> : <div className="flex min-h-48 flex-col items-center justify-center gap-3 border-y border-dashed py-8 text-muted-foreground"><Building2 className="size-8 text-primary/70" /><p className="text-sm">{running ? 'Waiting for ANAF…' : 'No company lookups yet'}</p></div>}
+        {rows.length > 0 ? <><div className="mb-4 flex flex-wrap justify-between gap-3"><div className="flex gap-1" role="group" aria-label="Result filter">{[['all', 'All'], ['vat', 'VAT payers'], ['review', 'Needs review']].map(([value, label]) => <Button key={value} size="sm" variant={filter === value ? 'secondary' : 'ghost'} onClick={() => setFilter(value ?? 'all')}>{label}</Button>)}</div><Input aria-label="Search results" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search name, CUI, city…" className="w-full rounded-md sm:w-64" /></div><div className="overflow-x-auto rounded-lg border"><table className="w-full min-w-[850px] text-left text-sm"><thead className="bg-secondary/50 text-xs text-muted-foreground"><tr>{['Company / CUI', 'VAT payer', 'County / Locality', 'Street & number', 'Postal code', ''].map((h, i) => <th key={i} className="px-4 py-3 font-medium">{h}</th>)}</tr></thead><tbody>{filtered.map(c => <tr key={c.cui} className="border-t hover:bg-muted/40"><td className="max-w-64 px-4 py-4"><Button variant="link" className="h-auto max-w-60 whitespace-normal p-0 text-left text-foreground" onClick={() => setSelected(c)}>{c.name || (c.status === 'error' ? 'Lookup unavailable' : 'Company not found')}</Button><div className="mt-1 font-mono text-xs text-muted-foreground">{c.cui}</div></td><td className="px-4 py-4"><span className={c.vat ? 'text-primary' : 'text-muted-foreground'}>{flag(c.vat)}</span></td><td className="px-4 py-4">{c.county || '—'}<div className="text-xs text-muted-foreground">{c.locality}</div></td><td className="max-w-60 px-4 py-4 text-muted-foreground">{c.street || '—'}</td><td className="px-4 py-4">{c.postalSource === 'ANAF' ? <div className="font-mono">{c.postalCode}</div> : c.status === 'found' ? <div className="flex flex-col gap-1"><Input aria-label={`Postal code for ${c.cui}`} inputMode="numeric" maxLength={6} placeholder="000000" value={drafts[c.cui] ?? c.postalCode} onChange={e => setPostalCode(c.cui, e.target.value)} className="h-8 w-24 rounded-md font-mono" />{!c.postalCode && <Button variant="outline" size="sm" className="h-7 w-fit px-2 text-xs" onClick={() => void findPostal(c)}><Copy className="size-3" />Find postal code</Button>}</div> : <div className="font-mono">—</div>}<div className={`mt-1 text-xs ${c.postalCode ? 'text-primary' : 'text-muted-foreground'}`}>{postalLabel(c)}</div></td><td className="px-2"><Button variant="ghost" size="icon" aria-label={`Details for ${c.cui}`} onClick={() => setSelected(c)}><ChevronRight /></Button></td></tr>)}</tbody></table>{!filtered.length && <p className="p-8 text-center text-sm text-muted-foreground">No companies match this filter.</p>}</div></> : <div className="flex min-h-48 flex-col items-center justify-center gap-3 border-y border-dashed py-8 text-muted-foreground"><Building2 className="size-8 text-primary/70" /><p className="text-sm">{running ? 'Waiting for ANAF…' : 'No company lookups yet'}</p></div>}
         <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"><span>Unresolved postal codes are never guessed.</span><a href={POSTAL_SOURCE_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground">Poșta Română postal search<ArrowUpRight className="size-3" /></a></div>
       </section>
     </div>
