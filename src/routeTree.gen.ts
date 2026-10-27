@@ -12,7 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 import { Route as ToolsFinanceCompanyLookupRouteImport } from './routes/tools.finance.company-lookup'
+import { Route as ToolsFinanceLoanCalculatorRouteImport } from './routes/tools.finance.loan-calculator'
 import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.finance.vat-calculator'
+import { Route as ToolsHrWorkingDaysRouteImport } from './routes/tools.hr.working-days'
+import { Route as ToolsSalesCommissionCalculatorRouteImport } from './routes/tools.sales.commission-calculator'
+import { Route as ToolsSalesDiscountCalculatorRouteImport } from './routes/tools.sales.discount-calculator'
+import { Route as ToolsSalesMarginMarkupRouteImport } from './routes/tools.sales.margin-markup'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,31 +35,74 @@ const ToolsFinanceCompanyLookupRoute =
     path: '/tools/finance/company-lookup',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ToolsFinanceLoanCalculatorRoute =
+  ToolsFinanceLoanCalculatorRouteImport.update({
+    id: '/tools/finance/loan-calculator',
+    path: '/tools/finance/loan-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ToolsFinanceVatCalculatorRoute =
   ToolsFinanceVatCalculatorRouteImport.update({
     id: '/tools/finance/vat-calculator',
     path: '/tools/finance/vat-calculator',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ToolsHrWorkingDaysRoute = ToolsHrWorkingDaysRouteImport.update({
+  id: '/tools/hr/working-days',
+  path: '/tools/hr/working-days',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsSalesCommissionCalculatorRoute =
+  ToolsSalesCommissionCalculatorRouteImport.update({
+    id: '/tools/sales/commission-calculator',
+    path: '/tools/sales/commission-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ToolsSalesDiscountCalculatorRoute =
+  ToolsSalesDiscountCalculatorRouteImport.update({
+    id: '/tools/sales/discount-calculator',
+    path: '/tools/sales/discount-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ToolsSalesMarginMarkupRoute = ToolsSalesMarginMarkupRouteImport.update({
+  id: '/tools/sales/margin-markup',
+  path: '/tools/sales/margin-markup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
+  '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
+  '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
+  '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
+  '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
+  '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
+  '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
+  '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
+  '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
+  '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
+  '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
+  '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
+  '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
+  '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
+  '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
+  '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -62,26 +110,46 @@ export interface FileRouteTypes {
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
+    | '/tools/finance/loan-calculator'
     | '/tools/finance/vat-calculator'
+    | '/tools/hr/working-days'
+    | '/tools/sales/commission-calculator'
+    | '/tools/sales/discount-calculator'
+    | '/tools/sales/margin-markup'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
+    | '/tools/finance/loan-calculator'
     | '/tools/finance/vat-calculator'
+    | '/tools/hr/working-days'
+    | '/tools/sales/commission-calculator'
+    | '/tools/sales/discount-calculator'
+    | '/tools/sales/margin-markup'
   id:
     | '__root__'
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
+    | '/tools/finance/loan-calculator'
     | '/tools/finance/vat-calculator'
+    | '/tools/hr/working-days'
+    | '/tools/sales/commission-calculator'
+    | '/tools/sales/discount-calculator'
+    | '/tools/sales/margin-markup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsFinanceCompanyLookupRoute: typeof ToolsFinanceCompanyLookupRoute
+  ToolsFinanceLoanCalculatorRoute: typeof ToolsFinanceLoanCalculatorRoute
   ToolsFinanceVatCalculatorRoute: typeof ToolsFinanceVatCalculatorRoute
+  ToolsHrWorkingDaysRoute: typeof ToolsHrWorkingDaysRoute
+  ToolsSalesCommissionCalculatorRoute: typeof ToolsSalesCommissionCalculatorRoute
+  ToolsSalesDiscountCalculatorRoute: typeof ToolsSalesDiscountCalculatorRoute
+  ToolsSalesMarginMarkupRoute: typeof ToolsSalesMarginMarkupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -107,11 +175,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsFinanceCompanyLookupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/finance/loan-calculator': {
+      id: '/tools/finance/loan-calculator'
+      path: '/tools/finance/loan-calculator'
+      fullPath: '/tools/finance/loan-calculator'
+      preLoaderRoute: typeof ToolsFinanceLoanCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/finance/vat-calculator': {
       id: '/tools/finance/vat-calculator'
       path: '/tools/finance/vat-calculator'
       fullPath: '/tools/finance/vat-calculator'
       preLoaderRoute: typeof ToolsFinanceVatCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/hr/working-days': {
+      id: '/tools/hr/working-days'
+      path: '/tools/hr/working-days'
+      fullPath: '/tools/hr/working-days'
+      preLoaderRoute: typeof ToolsHrWorkingDaysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/sales/commission-calculator': {
+      id: '/tools/sales/commission-calculator'
+      path: '/tools/sales/commission-calculator'
+      fullPath: '/tools/sales/commission-calculator'
+      preLoaderRoute: typeof ToolsSalesCommissionCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/sales/discount-calculator': {
+      id: '/tools/sales/discount-calculator'
+      path: '/tools/sales/discount-calculator'
+      fullPath: '/tools/sales/discount-calculator'
+      preLoaderRoute: typeof ToolsSalesDiscountCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/sales/margin-markup': {
+      id: '/tools/sales/margin-markup'
+      path: '/tools/sales/margin-markup'
+      fullPath: '/tools/sales/margin-markup'
+      preLoaderRoute: typeof ToolsSalesMarginMarkupRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -121,7 +224,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsFinanceCompanyLookupRoute: ToolsFinanceCompanyLookupRoute,
+  ToolsFinanceLoanCalculatorRoute: ToolsFinanceLoanCalculatorRoute,
   ToolsFinanceVatCalculatorRoute: ToolsFinanceVatCalculatorRoute,
+  ToolsHrWorkingDaysRoute: ToolsHrWorkingDaysRoute,
+  ToolsSalesCommissionCalculatorRoute: ToolsSalesCommissionCalculatorRoute,
+  ToolsSalesDiscountCalculatorRoute: ToolsSalesDiscountCalculatorRoute,
+  ToolsSalesMarginMarkupRoute: ToolsSalesMarginMarkupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
