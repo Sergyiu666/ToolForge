@@ -1,4 +1,12 @@
-export type Tool = { name: string; description: string; live?: boolean; href?: "/tools/finance/company-lookup" | "/tools/finance/vat-calculator" };
+export type ToolHref =
+  | "/tools/finance/company-lookup"
+  | "/tools/finance/vat-calculator"
+  | "/tools/finance/loan-calculator"
+  | "/tools/hr/working-days"
+  | "/tools/sales/margin-markup"
+  | "/tools/sales/discount-calculator"
+  | "/tools/sales/commission-calculator";
+export type Tool = { name: string; description: string; live?: boolean; href?: ToolHref };
 export type Category = {
   slug: string;
   name: string;
@@ -14,7 +22,7 @@ export const categories: Category[] = [
     tagline: "Calculators, currency rates, invoices and tax helpers.",
     icon: "₿",
     tools: [
-      { name: "Loan Calculator", description: "Monthly payments and amortization schedules." },
+      { name: "Loan Calculator", description: "Monthly payments and amortization schedules.", live: true, href: "/tools/finance/loan-calculator" },
       { name: "Currency Converter", description: "Live exchange rates from public rate servers." },
       { name: "ANAF Company Lookup", description: "Bulk CUI lookup, VAT status and official postal codes.", live: true, href: "/tools/finance/company-lookup" },
       { name: "Gross / Net / VAT Calculator", description: "Any VAT rate, plus AI invoice reading.", live: true, href: "/tools/finance/vat-calculator" },
@@ -30,7 +38,7 @@ export const categories: Category[] = [
       { name: "Gross to Net Salary", description: "Estimate take-home pay after taxes." },
       { name: "Vacation Day Tracker", description: "Calculate accrued and remaining leave." },
       { name: "Job Description Builder", description: "Draft structured job postings." },
-      { name: "Working Days Counter", description: "Business days between dates, with holidays." },
+      { name: "Working Days Counter", description: "Business days between dates, with holidays.", live: true, href: "/tools/hr/working-days" },
     ],
   },
   {
@@ -39,10 +47,10 @@ export const categories: Category[] = [
     tagline: "Pricing, margins, forecasts and company lookups.",
     icon: "↗",
     tools: [
-      { name: "Margin & Markup", description: "Convert between margin, markup and price." },
-      { name: "Discount Calculator", description: "Stacked discounts and final prices." },
+      { name: "Margin & Markup", description: "Convert between margin, markup and price.", live: true, href: "/tools/sales/margin-markup" },
+      { name: "Discount Calculator", description: "Stacked discounts and final prices.", live: true, href: "/tools/sales/discount-calculator" },
       { name: "Company Lookup", description: "Fetch company data from public registries." },
-      { name: "Commission Calculator", description: "Tiered commission payouts." },
+      { name: "Commission Calculator", description: "Tiered commission payouts.", live: true, href: "/tools/sales/commission-calculator" },
     ],
   },
 ];

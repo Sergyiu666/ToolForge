@@ -6,10 +6,10 @@ describe("tool catalog scope", () => {
     expect(categories.map(category => category.name)).toEqual(["Finance & Accounting", "HR", "Sales"]);
     expect(getCategory("utilities")).toBeUndefined();
   });
-  it("keeps only the existing two live tools", () => {
-    expect(categories.flatMap(category => category.tools).filter(tool => tool.live).map(tool => tool.href)).toEqual([
-      "/tools/finance/company-lookup", "/tools/finance/vat-calculator",
-    ]);
+  it("every live tool has a destination", () => {
+    const live = categories.flatMap(category => category.tools).filter(tool => tool.live);
+    expect(live).toHaveLength(7);
+    expect(live.every(tool => tool.href)).toBe(true);
     expect(categories.map(category => category.tools.length)).toEqual([5, 4, 4]);
   });
 });
