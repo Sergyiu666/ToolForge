@@ -10,6 +10,6 @@ describe("tool catalog scope", () => {
     const live = categories.flatMap(category => category.tools).filter(tool => tool.live);
     expect(live).toHaveLength(7);
     expect(live.every(tool => tool.href)).toBe(true);
-    expect(categories.map(category => category.tools.length)).toEqual([5, 4, 4]);
+    expect(categories.map(category => category.tools.length)).toEqual([9, 5, 4]);
   });
 });
