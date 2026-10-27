@@ -23,10 +23,14 @@ export const categories: Category[] = [
     icon: "₿",
     tools: [
       { name: "Loan Calculator", description: "Monthly payments and amortization schedules.", live: true, href: "/tools/finance/loan-calculator" },
-      { name: "Currency Converter", description: "Live exchange rates from public rate servers." },
+      { name: "BNR Currency Converter", description: "Convert using official BNR exchange rates." },
       { name: "ANAF Company Lookup", description: "Bulk CUI lookup, VAT status and official postal codes.", live: true, href: "/tools/finance/company-lookup" },
       { name: "Gross / Net / VAT Calculator", description: "Any VAT rate, plus AI invoice reading.", live: true, href: "/tools/finance/vat-calculator" },
       { name: "Invoice Generator", description: "Create clean PDF invoices in seconds." },
+      { name: "Invoice Review & Assignments", description: "Review invoice lines and assign accounts, cost and profit centers." },
+      { name: "Export Profiles (ERP / IFS)", description: "Configurable export layouts for your accounting software." },
+      { name: "Payment Due Date & Late Penalties", description: "Due dates and late payment penalty amounts." },
+      { name: "PFA vs SRL / Dividend vs Salary", description: "Compare business forms and ways to pay yourself." },
     ],
   },
   {
@@ -39,6 +43,7 @@ export const categories: Category[] = [
       { name: "Vacation Day Tracker", description: "Calculate accrued and remaining leave." },
       { name: "Job Description Builder", description: "Draft structured job postings." },
       { name: "Working Days Counter", description: "Business days between dates, with holidays.", live: true, href: "/tools/hr/working-days" },
+      { name: "Overtime & Night Work Pay", description: "Extra pay for overtime and night hours." },
     ],
   },
   {
