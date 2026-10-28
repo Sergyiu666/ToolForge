@@ -63,6 +63,16 @@ function Page() {
           </table>
         </div>
       )}
+      {res && (
+        <div className="mt-4 flex gap-2">
+          <button onClick={() => void download("csv")} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium hover:border-primary">
+            <Download className="size-4" /> Export CSV
+          </button>
+          <button onClick={() => void download("xlsx")} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium hover:border-primary">
+            <FileSpreadsheet className="size-4" /> Export Excel
+          </button>
+        </div>
+      )}
     </ToolPage>
   );
 }
