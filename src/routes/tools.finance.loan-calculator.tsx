@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Download, FileSpreadsheet } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Field, Stat, ToolPage, fmt, meta, num } from "@/components/ToolPage";
 import { loanSchedule } from "@/lib/calc";
@@ -17,6 +18,25 @@ function Page() {
     if (!(P > 0) || !(R >= 0) || !(M > 0) || M > 600) return null;
     return loanSchedule(P, R, M);
   }, [p, r, m]);
+
+  const download = async (format: "csv" | "xlsx") => {
+    if (!res) return;
+    const headers = ["Month", "Payment", "Interest", "Principal", "Balance"];
+    const rows = res.rows.map((x) => [String(x.month), x.payment.toFixed(2), x.interest.toFixed(2), x.principal.toFixed(2), x.balance.toFixed(2)]);
+    if (format === "xlsx") {
+      const XLSX = await import("xlsx");
+      const book = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(book, XLSX.utils.aoa_to_sheet([headers, ...rows]), "Schedule");
+      XLSX.writeFile(book, "loan-schedule.xlsx");
+    } else {
+      const csv = [headers, ...rows].map((r2) => r2.join(",")).join("\n");
+      const url = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
+      const a = document.createElement("a");
+      a.href = url; a.download = "loan-schedule.csv"; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+  };
+
   return (
     <ToolPage category="finance" categoryName="Finance & Accounting" title="Loan Calculator" intro="Enter the amount, yearly interest and number of months.">
       <div className="grid gap-4 sm:grid-cols-3">
@@ -41,6 +61,16 @@ function Page() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+      {res && (
+        <div className="mt-4 flex gap-2">
+          <button onClick={() => void download("csv")} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium hover:border-primary">
+            <Download className="size-4" /> Export CSV
+          </button>
+          <button onClick={() => void download("xlsx")} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium hover:border-primary">
+            <FileSpreadsheet className="size-4" /> Export Excel
+          </button>
         </div>
       )}
     </ToolPage>
