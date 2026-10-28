@@ -2,6 +2,7 @@ export type ToolHref =
   | "/tools/finance/company-lookup"
   | "/tools/finance/vat-calculator"
   | "/tools/finance/loan-calculator"
+  | "/tools/finance/payment-due-date"
   | "/tools/hr/working-days"
   | "/tools/sales/margin-markup"
   | "/tools/sales/discount-calculator"
@@ -29,7 +30,7 @@ export const categories: Category[] = [
       { name: "Invoice Generator", description: "Create clean PDF invoices in seconds." },
       { name: "Invoice Review & Assignments", description: "Review invoice lines and assign accounts, cost and profit centers." },
       { name: "Export Profiles (ERP / IFS)", description: "Configurable export layouts for your accounting software." },
-      { name: "Payment Due Date & Late Penalties", description: "Due dates and late payment penalty amounts." },
+      { name: "Payment Due Date & Late Penalties", description: "Due dates and contractual daily penalty amounts.", live: true, href: "/tools/finance/payment-due-date" },
       { name: "PFA vs SRL / Dividend vs Salary", description: "Compare business forms and ways to pay yourself." },
     ],
   },

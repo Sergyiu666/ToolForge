@@ -7,11 +7,11 @@
 - Loan, Margin & Markup, Discount, Commission, Working Days calculators
 - "Soon" placeholders for remaining planned tools
 - Loan Calculator: CSV/Excel amortization schedule export
+- Payment due date & contractual daily late payment penalties
 
 ## Next (pending credits / user go-ahead)
 - VIES check alongside ANAF in company lookup
 - Chart of accounts import + cost center assignment in invoice review
-- Payment due date & late payment penalties
 - BNR currency converter
 - Romanian holidays preloaded in Working Days
 - Language switch (EN/RO)
