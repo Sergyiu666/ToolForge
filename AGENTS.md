@@ -14,3 +14,4 @@
 - Company lookup uses public read-only server functions for official registries, processes bounded batches, and keeps imported lists and results in page state to avoid storing user files unnecessarily.
 - Postal enrichment must match county, locality, street and number ranges against official candidates; unresolved or ambiguous addresses remain flagged rather than guessed.
 - Spreadsheet parsing and exports load SheetJS only in browser event handlers; exported registry strings are sanitized to prevent formula injection.
+- Payment due-date arithmetic lives in a client-safe tested helper using UTC calendar days and user-entered contractual rates; it never assumes statutory penalty rates.
