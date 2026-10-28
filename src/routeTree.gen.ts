@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 import { Route as ToolsFinanceCompanyLookupRouteImport } from './routes/tools.finance.company-lookup'
 import { Route as ToolsFinanceLoanCalculatorRouteImport } from './routes/tools.finance.loan-calculator'
+import { Route as ToolsFinancePaymentDueDateRouteImport } from './routes/tools.finance.payment-due-date'
 import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.finance.vat-calculator'
 import { Route as ToolsHrWorkingDaysRouteImport } from './routes/tools.hr.working-days'
 import { Route as ToolsSalesCommissionCalculatorRouteImport } from './routes/tools.sales.commission-calculator'
@@ -39,6 +40,12 @@ const ToolsFinanceLoanCalculatorRoute =
   ToolsFinanceLoanCalculatorRouteImport.update({
     id: '/tools/finance/loan-calculator',
     path: '/tools/finance/loan-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ToolsFinancePaymentDueDateRoute =
+  ToolsFinancePaymentDueDateRouteImport.update({
+    id: '/tools/finance/payment-due-date',
+    path: '/tools/finance/payment-due-date',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ToolsFinanceVatCalculatorRoute =
@@ -75,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
+  '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
@@ -86,6 +94,7 @@ export interface FileRoutesByTo {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
+  '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
@@ -98,6 +107,7 @@ export interface FileRoutesById {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
+  '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/loan-calculator'
+    | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/loan-calculator'
+    | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
@@ -133,6 +145,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/loan-calculator'
+    | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
@@ -145,6 +158,7 @@ export interface RootRouteChildren {
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsFinanceCompanyLookupRoute: typeof ToolsFinanceCompanyLookupRoute
   ToolsFinanceLoanCalculatorRoute: typeof ToolsFinanceLoanCalculatorRoute
+  ToolsFinancePaymentDueDateRoute: typeof ToolsFinancePaymentDueDateRoute
   ToolsFinanceVatCalculatorRoute: typeof ToolsFinanceVatCalculatorRoute
   ToolsHrWorkingDaysRoute: typeof ToolsHrWorkingDaysRoute
   ToolsSalesCommissionCalculatorRoute: typeof ToolsSalesCommissionCalculatorRoute
@@ -180,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/tools/finance/loan-calculator'
       fullPath: '/tools/finance/loan-calculator'
       preLoaderRoute: typeof ToolsFinanceLoanCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/finance/payment-due-date': {
+      id: '/tools/finance/payment-due-date'
+      path: '/tools/finance/payment-due-date'
+      fullPath: '/tools/finance/payment-due-date'
+      preLoaderRoute: typeof ToolsFinancePaymentDueDateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/finance/vat-calculator': {
@@ -225,6 +246,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsFinanceCompanyLookupRoute: ToolsFinanceCompanyLookupRoute,
   ToolsFinanceLoanCalculatorRoute: ToolsFinanceLoanCalculatorRoute,
+  ToolsFinancePaymentDueDateRoute: ToolsFinancePaymentDueDateRoute,
   ToolsFinanceVatCalculatorRoute: ToolsFinanceVatCalculatorRoute,
   ToolsHrWorkingDaysRoute: ToolsHrWorkingDaysRoute,
   ToolsSalesCommissionCalculatorRoute: ToolsSalesCommissionCalculatorRoute,
