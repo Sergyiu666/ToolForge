@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { ToolPage, Field, Stat, fmt, num, meta } from '@/components/ToolPage';
 import { paymentDue } from '@/lib/payment';
+import { Copy } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const Route = createFileRoute('/tools/finance/payment-due-date')({
   head: () => meta('Payment Due Date & Late Penalties — Toolforge', 'Calculate calendar-day invoice due dates and simple late payment penalties using your contractual daily rate.'),
@@ -32,6 +34,10 @@ function PaymentCalculator() {
       <Stat label="Late payment penalty" value={result ? fmt(result.penalty) : '—'} />
       <Stat label="Total outstanding" value={result ? fmt(result.total) : '—'} />
     </div>
+    {result && complete && <button type="button" onClick={async () => {
+      const text = `Invoice date: ${invoice}\nPayment terms: ${terms} days\nDue date: ${result.dueDate}\nCalculated as of: ${asOf}\nDays overdue: ${result.overdue}\nOutstanding amount: ${fmt(num(amount))}\nContractual penalty: ${rate}% per day\nLate payment penalty: ${fmt(result.penalty)}\nTotal outstanding: ${fmt(result.total)}`;
+      try { await navigator.clipboard.writeText(text); toast.success('Summary copied'); } catch { toast.error('Could not copy the summary'); }
+    }} className="mt-5 inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm hover:border-primary"><Copy className="h-4 w-4" />Copy summary</button>}
     <p className="mt-5 text-xs text-muted-foreground">Contractual estimate only, not a statutory Romanian penalty rate. Calendar days include weekends and holidays; penalties start the day after the due date. All amounts use the currency of your invoice.</p>
   </ToolPage>;
 }
