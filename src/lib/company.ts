@@ -1,3 +1,4 @@
+import type { ViesResult } from './vies';
 export const MAX_COMPANIES = 500;
 export const POSTAL_SOURCE_URL = 'https://www.posta-romana.ro/cauta-cod-postal.html';
 export function validLookupDate(value: string, today = new Date().toISOString().slice(0, 10)) {
@@ -12,6 +13,7 @@ export type Company = {
   postalCode: string; postalSource: 'ANAF' | 'Manual' | '';
   postalStatus: 'verified' | 'missing' | 'ambiguous' | 'unavailable';
   status: 'found' | 'not-found' | 'error'; message: string; checkedAt: string;
+  vies?: ViesResult;
 };
 export function validCui(cui: string) {
   if (!/^[1-9]\d{1,9}$/.test(cui)) return false;
@@ -50,6 +52,8 @@ export function exportRows(companies: Company[]) {
     'Stradă & Număr': c.street, 'Cod Poștal': c.postalCode, 'Adresă Completă': c.address,
     'Sursă Cod Poștal': c.postalSource, 'Verificare Cod Poștal': c.postalStatus,
     'Rezultat': c.status, 'Observații': c.message, 'Verificat la': c.checkedAt,
+    'VIES': c.vies?.status || '', 'VIES verificat la': c.vies?.checkedAt || '',
+    'VIES denumire': c.vies?.name || '', 'VIES adresă': c.vies?.address || '', 'VIES observații': c.vies?.message || '',
   }));
 }
 // Spreadsheet exports must not evaluate values received from external registries as formulas.

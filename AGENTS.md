@@ -15,3 +15,5 @@
 - Postal enrichment must match county, locality, street and number ranges against official candidates; unresolved or ambiguous addresses remain flagged rather than guessed.
 - Spreadsheet parsing and exports load SheetJS only in browser event handlers; exported registry strings are sanitized to prevent formula injection.
 - Payment due-date arithmetic lives in a client-safe tested helper using UTC calendar days and user-entered contractual rates; it never assumes statutory penalty rates.
+- VIES validation is independent of ANAF VAT status and historical ANAF dates; combined lookups process five IDs per invocation so one ANAF call plus five VIES calls stays within the outbound connection budget.
+- Romanian holiday presets are bounded to verified calendar years, support Orthodox and Western Christian dates, and deduplicate overlaps with user-entered holidays to avoid double-counting.

@@ -9,10 +9,12 @@
 - Loan Calculator: CSV/Excel amortization schedule export
 - Payment due date & contractual daily late payment penalties
 
+## Phase 1 (complete)
+- Romanian public holiday presets (2024–2027), preserving custom holidays
+- VIES check alongside ANAF, EU VAT input, export and end-to-end checks
+
 ## Next (pending credits / user go-ahead)
-- VIES check alongside ANAF in company lookup
 - Chart of accounts import + cost center assignment in invoice review
 - BNR currency converter
-- Romanian holidays preloaded in Working Days
 - Language switch (EN/RO)
 - [HOLD] Salary, overtime/night pay, PFA vs SRL (need official rates from user)
