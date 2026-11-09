@@ -15,7 +15,7 @@ it.each([[2024, '2024-05-05', '2024-05-03', '2024-06-24'], [2025, '2025-04-20', 
 it('deduplicates overlapping public and custom holidays without moving weekend holidays', () => {
   const holidays = romanianHolidays(2026).map(h => h.date);
   expect(workingDays('2026-06-01', '2026-06-05', [...holidays, '2026-06-01'])).toEqual({ working: 4, weekend: 0, holidays: 1 });
-  expect(workingDays('2026-01-01', '2026-01-31', holidays)).toEqual({ working: 17, weekend: 9, holidays: 5 });
+  expect(workingDays('2026-01-01', '2026-01-31', holidays)).toEqual({ working: 18, weekend: 9, holidays: 4 });
 });
 it('supports Western Christian dates and refuses to guess years outside coverage', () => {
   expect(romanianHolidays(2026, 'western').find(h => h.name === 'Easter')?.date).toBe('2026-04-05');

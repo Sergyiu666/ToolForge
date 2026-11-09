@@ -31,6 +31,6 @@ export async function lookupVatCompanies(keys: string[], date: string): Promise<
       ...blankCompany(key, result?.status === 'valid' ? 'found' : result?.status === 'invalid' ? 'not-found' : 'error', '', result?.checkedAt || ''),
       name: result?.name || '', address: result?.address || '',
     };
-    return { ...(row || blankCompany(key, 'error', 'Registry response unavailable.', new Date().toISOString())), vies: result };
+    return { ...(row || blankCompany(key, 'error', 'Registry response unavailable.', new Date().toISOString())), ...(result ? { vies: result } : {}) };
   });
 }
