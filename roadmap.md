@@ -9,7 +9,7 @@
 - Loan Calculator: CSV/Excel amortization schedule export
 - Payment due date & contractual daily late payment penalties
 
-## Phase 1 (in progress)
+## Phase 1 (complete)
 - Romanian public holiday presets (2024–2027), preserving custom holidays
 - VIES check alongside ANAF, EU VAT input, export and end-to-end checks
 
