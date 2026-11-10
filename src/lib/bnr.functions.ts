@@ -13,12 +13,9 @@ export const bnrRatesFn = createServerFn({ method: 'POST' })
       if (!res.ok) throw new Error('BNR unavailable');
       return parseBnrXml(await res.text());
     };
-    let day = pickDay(await get('https://curs.bnr.ro/nbrfxrates.xml'), data.date);
-    if (!day || day.date !== data.date) {
-      const yearly = pickDay(await get(`https://curs.bnr.ro/files/xml/years/nbrfxrates${year}.xml`), data.date);
-      if (yearly && (!day || yearly.date > day.date || data.date < day.date)) day = yearly;
-      if (day && day.date > data.date) day = yearly;
-    }
+    const latest = pickDay(await get('https://curs.bnr.ro/nbrfxrates.xml'), data.date);
+    let day = latest && latest.date === data.date ? latest : undefined;
+    for (let y = year; !day && y >= year - 1; y--) day = pickDay(await get(`https://curs.bnr.ro/files/xml/years/nbrfxrates${y}.xml`), data.date);
     if (!day) throw new Error('No BNR rate published on or before this date');
     return day;
   });
