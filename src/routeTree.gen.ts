@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 import { Route as ToolsFinanceCompanyLookupRouteImport } from './routes/tools.finance.company-lookup'
+import { Route as ToolsFinanceCurrencyConverterRouteImport } from './routes/tools.finance.currency-converter'
 import { Route as ToolsFinanceLoanCalculatorRouteImport } from './routes/tools.finance.loan-calculator'
 import { Route as ToolsFinancePaymentDueDateRouteImport } from './routes/tools.finance.payment-due-date'
 import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.finance.vat-calculator'
+import { Route as ToolsHrVacationTrackerRouteImport } from './routes/tools.hr.vacation-tracker'
 import { Route as ToolsHrWorkingDaysRouteImport } from './routes/tools.hr.working-days'
 import { Route as ToolsSalesCommissionCalculatorRouteImport } from './routes/tools.sales.commission-calculator'
 import { Route as ToolsSalesDiscountCalculatorRouteImport } from './routes/tools.sales.discount-calculator'
@@ -36,6 +38,12 @@ const ToolsFinanceCompanyLookupRoute =
     path: '/tools/finance/company-lookup',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ToolsFinanceCurrencyConverterRoute =
+  ToolsFinanceCurrencyConverterRouteImport.update({
+    id: '/tools/finance/currency-converter',
+    path: '/tools/finance/currency-converter',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ToolsFinanceLoanCalculatorRoute =
   ToolsFinanceLoanCalculatorRouteImport.update({
     id: '/tools/finance/loan-calculator',
@@ -54,6 +62,11 @@ const ToolsFinanceVatCalculatorRoute =
     path: '/tools/finance/vat-calculator',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ToolsHrVacationTrackerRoute = ToolsHrVacationTrackerRouteImport.update({
+  id: '/tools/hr/vacation-tracker',
+  path: '/tools/hr/vacation-tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsHrWorkingDaysRoute = ToolsHrWorkingDaysRouteImport.update({
   id: '/tools/hr/working-days',
   path: '/tools/hr/working-days',
@@ -81,9 +94,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
+  '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
+  '/tools/hr/vacation-tracker': typeof ToolsHrVacationTrackerRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
@@ -93,9 +108,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
+  '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
+  '/tools/hr/vacation-tracker': typeof ToolsHrVacationTrackerRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
@@ -106,9 +123,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
+  '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
+  '/tools/hr/vacation-tracker': typeof ToolsHrVacationTrackerRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
@@ -120,9 +139,11 @@ export interface FileRouteTypes {
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
+    | '/tools/finance/currency-converter'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
+    | '/tools/hr/vacation-tracker'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
@@ -132,9 +153,11 @@ export interface FileRouteTypes {
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
+    | '/tools/finance/currency-converter'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
+    | '/tools/hr/vacation-tracker'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
@@ -144,9 +167,11 @@ export interface FileRouteTypes {
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
+    | '/tools/finance/currency-converter'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
+    | '/tools/hr/vacation-tracker'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
@@ -157,9 +182,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsFinanceCompanyLookupRoute: typeof ToolsFinanceCompanyLookupRoute
+  ToolsFinanceCurrencyConverterRoute: typeof ToolsFinanceCurrencyConverterRoute
   ToolsFinanceLoanCalculatorRoute: typeof ToolsFinanceLoanCalculatorRoute
   ToolsFinancePaymentDueDateRoute: typeof ToolsFinancePaymentDueDateRoute
   ToolsFinanceVatCalculatorRoute: typeof ToolsFinanceVatCalculatorRoute
+  ToolsHrVacationTrackerRoute: typeof ToolsHrVacationTrackerRoute
   ToolsHrWorkingDaysRoute: typeof ToolsHrWorkingDaysRoute
   ToolsSalesCommissionCalculatorRoute: typeof ToolsSalesCommissionCalculatorRoute
   ToolsSalesDiscountCalculatorRoute: typeof ToolsSalesDiscountCalculatorRoute
@@ -189,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsFinanceCompanyLookupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/finance/currency-converter': {
+      id: '/tools/finance/currency-converter'
+      path: '/tools/finance/currency-converter'
+      fullPath: '/tools/finance/currency-converter'
+      preLoaderRoute: typeof ToolsFinanceCurrencyConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/finance/loan-calculator': {
       id: '/tools/finance/loan-calculator'
       path: '/tools/finance/loan-calculator'
@@ -208,6 +242,13 @@ declare module '@tanstack/react-router' {
       path: '/tools/finance/vat-calculator'
       fullPath: '/tools/finance/vat-calculator'
       preLoaderRoute: typeof ToolsFinanceVatCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/hr/vacation-tracker': {
+      id: '/tools/hr/vacation-tracker'
+      path: '/tools/hr/vacation-tracker'
+      fullPath: '/tools/hr/vacation-tracker'
+      preLoaderRoute: typeof ToolsHrVacationTrackerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/hr/working-days': {
@@ -245,9 +286,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsFinanceCompanyLookupRoute: ToolsFinanceCompanyLookupRoute,
+  ToolsFinanceCurrencyConverterRoute: ToolsFinanceCurrencyConverterRoute,
   ToolsFinanceLoanCalculatorRoute: ToolsFinanceLoanCalculatorRoute,
   ToolsFinancePaymentDueDateRoute: ToolsFinancePaymentDueDateRoute,
   ToolsFinanceVatCalculatorRoute: ToolsFinanceVatCalculatorRoute,
+  ToolsHrVacationTrackerRoute: ToolsHrVacationTrackerRoute,
   ToolsHrWorkingDaysRoute: ToolsHrWorkingDaysRoute,
   ToolsSalesCommissionCalculatorRoute: ToolsSalesCommissionCalculatorRoute,
   ToolsSalesDiscountCalculatorRoute: ToolsSalesDiscountCalculatorRoute,

@@ -3,7 +3,9 @@ export type ToolHref =
   | "/tools/finance/vat-calculator"
   | "/tools/finance/loan-calculator"
   | "/tools/finance/payment-due-date"
+  | "/tools/finance/currency-converter"
   | "/tools/hr/working-days"
+  | "/tools/hr/vacation-tracker"
   | "/tools/sales/margin-markup"
   | "/tools/sales/discount-calculator"
   | "/tools/sales/commission-calculator";
@@ -24,7 +26,7 @@ export const categories: Category[] = [
     icon: "₿",
     tools: [
       { name: "Loan Calculator", description: "Monthly payments and amortization schedules.", live: true, href: "/tools/finance/loan-calculator" },
-      { name: "BNR Currency Converter", description: "Convert using official BNR exchange rates." },
+      { name: "BNR Currency Converter", description: "Convert using official BNR exchange rates.", live: true, href: "/tools/finance/currency-converter" },
       { name: "ANAF Company Lookup", description: "Bulk CUIs and EU VAT numbers, ANAF details and VIES validation.", live: true, href: "/tools/finance/company-lookup" },
       { name: "Gross / Net / VAT Calculator", description: "Any VAT rate, plus AI invoice reading.", live: true, href: "/tools/finance/vat-calculator" },
       { name: "Invoice Generator", description: "Create clean PDF invoices in seconds." },
@@ -41,7 +43,7 @@ export const categories: Category[] = [
     icon: "◎",
     tools: [
       { name: "Gross to Net Salary", description: "Estimate take-home pay after taxes." },
-      { name: "Vacation Day Tracker", description: "Calculate accrued and remaining leave." },
+      { name: "Vacation Day Tracker", description: "Leave used and remaining, excluding Romanian holidays.", live: true, href: "/tools/hr/vacation-tracker" },
       { name: "Job Description Builder", description: "Draft structured job postings." },
       { name: "Working Days Counter", description: "Business days with Romanian public holidays (2024–2027).", live: true, href: "/tools/hr/working-days" },
       { name: "Overtime & Night Work Pay", description: "Extra pay for overtime and night hours." },

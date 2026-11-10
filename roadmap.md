@@ -13,8 +13,11 @@
 - Romanian public holiday presets (2024–2027), preserving custom holidays
 - VIES check alongside ANAF, EU VAT input, export and end-to-end checks
 
+## Phase 2 (complete)
+- BNR currency converter (official rates, any date)
+- Vacation day tracker
+
 ## Next (pending credits / user go-ahead)
 - Chart of accounts import + cost center assignment in invoice review
-- BNR currency converter
 - Language switch (EN/RO)
 - [HOLD] Salary, overtime/night pay, PFA vs SRL (need official rates from user)
