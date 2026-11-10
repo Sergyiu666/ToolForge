@@ -6,9 +6,9 @@ const xml = `<Body><Cube date="2026-11-06"><Rate currency="EUR">5.0000</Rate></C
 describe('BNR rates', () => {
   it('parses multipliers and picks the last published day', () => {
     const days = parseBnrXml(xml);
-    expect(days[1].rates.HUF).toBeCloseTo(0.0125);
+    expect(days[1]!.rates['HUF']).toBeCloseTo(0.0125);
     expect(pickDay(days, '2026-11-08')!.date).toBe('2026-11-06');
-    expect(convert(100, 'EUR', 'USD', days[1].rates)).toBeCloseTo(120);
+    expect(convert(100, 'EUR', 'USD', days[1]!.rates)).toBeCloseTo(120);
   });
 });
 describe('vacation balance', () => {

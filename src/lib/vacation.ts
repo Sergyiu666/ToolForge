@@ -6,8 +6,8 @@ export type Leave = { start: string; end: string };
 export function vacationBalance(allowance: number, carryover: number, leaves: Leave[]) {
   const seen = new Set<string>();
   const rows = leaves.map(l => {
-    const years = [Number(l.start.slice(0, 4)), Number(l.end.slice(0, 4))];
-    const hol = [years[0], years[1]].flatMap(y => romanianHolidays(y)).map(h => h.date);
+    const years: number[] = [Number(l.start.slice(0, 4)), Number(l.end.slice(0, 4))];
+    const hol = years.flatMap(y => romanianHolidays(y)).map(h => h.date);
     const r = l.start && l.end ? workingDays(l.start, l.end, hol) : null;
     if (!r) return { ...l, days: null as number | null };
     let days = 0;
