@@ -20,3 +20,19 @@ describe('payment due dates and contractual penalties', () => {
     expect(paymentDue('2026-01-01', 30, '2026-04-01', -100, 1)).toBeNull();
   });
 });
+import { paymentLedger } from './payment';
+describe('paymentLedger', () => {
+  const base = { invoiceDate: '2026-10-01', terms: 10, asOf: '2026-10-31', amount: 1000, dailyRate: 0.1, capPct: null };
+  it('principal first lowers later accrual', () => {
+    const r = paymentLedger({ ...base, mode: 'principal', payments: [{ date: '2026-10-21', amount: 500 }] })!;
+    expect(r.accruedTotal).toBeCloseTo(15); expect(r.balance).toBeCloseTo(515);
+  });
+  it('penalties first pays accrued penalty before principal', () => {
+    const r = paymentLedger({ ...base, mode: 'penalty', payments: [{ date: '2026-10-21', amount: 500 }] })!;
+    expect(r.principal).toBeCloseTo(510); expect(r.balance).toBeCloseTo(515.1);
+  });
+  it('caps total penalties', () => {
+    const r = paymentLedger({ ...base, mode: 'principal', capPct: 1, payments: [] })!;
+    expect(r.accruedTotal).toBeCloseTo(10); expect(r.capped).toBe(true);
+  });
+});
