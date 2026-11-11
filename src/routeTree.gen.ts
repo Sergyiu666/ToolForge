@@ -22,6 +22,7 @@ import { Route as ToolsHrWorkingDaysRouteImport } from './routes/tools.hr.workin
 import { Route as ToolsSalesCommissionCalculatorRouteImport } from './routes/tools.sales.commission-calculator'
 import { Route as ToolsSalesDiscountCalculatorRouteImport } from './routes/tools.sales.discount-calculator'
 import { Route as ToolsSalesMarginMarkupRouteImport } from './routes/tools.sales.margin-markup'
+import { Route as ToolsSalesPaymentDueDateRouteImport } from './routes/tools.sales.payment-due-date'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -96,6 +97,12 @@ const ToolsSalesMarginMarkupRoute = ToolsSalesMarginMarkupRouteImport.update({
   path: '/tools/sales/margin-markup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsSalesPaymentDueDateRoute =
+  ToolsSalesPaymentDueDateRouteImport.update({
+    id: '/tools/sales/payment-due-date',
+    path: '/tools/sales/payment-due-date',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
+  '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +134,7 @@ export interface FileRoutesByTo {
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
+  '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,6 +151,7 @@ export interface FileRoutesById {
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
+  '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
+    | '/tools/sales/payment-due-date'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
+    | '/tools/sales/payment-due-date'
   id:
     | '__root__'
     | '/'
@@ -189,6 +201,7 @@ export interface FileRouteTypes {
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
+    | '/tools/sales/payment-due-date'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,6 +218,7 @@ export interface RootRouteChildren {
   ToolsSalesCommissionCalculatorRoute: typeof ToolsSalesCommissionCalculatorRoute
   ToolsSalesDiscountCalculatorRoute: typeof ToolsSalesDiscountCalculatorRoute
   ToolsSalesMarginMarkupRoute: typeof ToolsSalesMarginMarkupRoute
+  ToolsSalesPaymentDueDateRoute: typeof ToolsSalesPaymentDueDateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -300,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsSalesMarginMarkupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/sales/payment-due-date': {
+      id: '/tools/sales/payment-due-date'
+      path: '/tools/sales/payment-due-date'
+      fullPath: '/tools/sales/payment-due-date'
+      preLoaderRoute: typeof ToolsSalesPaymentDueDateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -317,6 +338,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsSalesCommissionCalculatorRoute: ToolsSalesCommissionCalculatorRoute,
   ToolsSalesDiscountCalculatorRoute: ToolsSalesDiscountCalculatorRoute,
   ToolsSalesMarginMarkupRoute: ToolsSalesMarginMarkupRoute,
+  ToolsSalesPaymentDueDateRoute: ToolsSalesPaymentDueDateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
