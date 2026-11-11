@@ -5,6 +5,7 @@ import { getInitialVatRate } from "@/config/rates";
 import { SiteShell } from "@/components/SiteShell";
 import { computeVat, type VatField } from "@/lib/vat";
 import { analyzeInvoiceFn } from "@/lib/invoice.functions";
+import { Button } from '@/components/ui/button';
 type InvoiceAnalysis = Awaited<ReturnType<typeof analyzeInvoiceFn>>;
 
 const title = "Gross / Net / VAT Calculator — Toolforge";
@@ -89,6 +90,7 @@ function VatPage() {
           </div>
 
           <InvoiceReader onUse={useItem} />
+          <Button asChild variant="outline" className="mt-6"><Link to="/tools/finance/invoice-review">Invoice review, assignments & IFS export</Link></Button>
         </div>
       </section>
     </SiteShell>
@@ -158,6 +160,9 @@ function InvoiceReader({ onUse }: { onUse: (net: number, rate: number) => void }
           <div className="flex justify-between px-4 py-3 text-sm text-muted-foreground">
             <span>{data.vendor ?? "Invoice"}</span><span>{data.currency ?? ""}</span>
           </div>
+          <Button asChild variant="outline" className="mx-4 mb-3"><Link to="/tools/finance/invoice-review" onClick={() => {
+            sessionStorage.setItem('toolforge-invoice-handoff', JSON.stringify({ number: '', date: '', vendor: data.vendor ?? '', currency: data.currency ?? '', declaredNet: null, lines: data.items.map((item, idx) => ({ id: `ai-${idx}`, description: item.description, net: item.net, vatRate: item.vatRate, vat: item.vat, allocations: [{ percent: 100, account: '', cost: '', profit: '' }] })) }));
+          }}>Review & assign these items</Link></Button>
           <table className="w-full text-sm">
             <thead className="bg-secondary text-left text-xs uppercase text-muted-foreground">
               <tr><th className="p-3">Item</th><th className="p-3">Category</th><th className="p-3 text-right">Net</th><th className="p-3 text-right">VAT %</th><th className="p-3 text-right">VAT</th><th className="p-3 text-right">Gross</th><th /></tr>

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 import { Route as ToolsFinanceCompanyLookupRouteImport } from './routes/tools.finance.company-lookup'
 import { Route as ToolsFinanceCurrencyConverterRouteImport } from './routes/tools.finance.currency-converter'
+import { Route as ToolsFinanceInvoiceReviewRouteImport } from './routes/tools.finance.invoice-review'
 import { Route as ToolsFinanceLoanCalculatorRouteImport } from './routes/tools.finance.loan-calculator'
 import { Route as ToolsFinancePaymentDueDateRouteImport } from './routes/tools.finance.payment-due-date'
 import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.finance.vat-calculator'
@@ -21,6 +22,7 @@ import { Route as ToolsHrWorkingDaysRouteImport } from './routes/tools.hr.workin
 import { Route as ToolsSalesCommissionCalculatorRouteImport } from './routes/tools.sales.commission-calculator'
 import { Route as ToolsSalesDiscountCalculatorRouteImport } from './routes/tools.sales.discount-calculator'
 import { Route as ToolsSalesMarginMarkupRouteImport } from './routes/tools.sales.margin-markup'
+import { Route as ToolsSalesPaymentDueDateRouteImport } from './routes/tools.sales.payment-due-date'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -42,6 +44,12 @@ const ToolsFinanceCurrencyConverterRoute =
   ToolsFinanceCurrencyConverterRouteImport.update({
     id: '/tools/finance/currency-converter',
     path: '/tools/finance/currency-converter',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ToolsFinanceInvoiceReviewRoute =
+  ToolsFinanceInvoiceReviewRouteImport.update({
+    id: '/tools/finance/invoice-review',
+    path: '/tools/finance/invoice-review',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ToolsFinanceLoanCalculatorRoute =
@@ -89,12 +97,19 @@ const ToolsSalesMarginMarkupRoute = ToolsSalesMarginMarkupRouteImport.update({
   path: '/tools/sales/margin-markup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsSalesPaymentDueDateRoute =
+  ToolsSalesPaymentDueDateRouteImport.update({
+    id: '/tools/sales/payment-due-date',
+    path: '/tools/sales/payment-due-date',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
+  '/tools/finance/invoice-review': typeof ToolsFinanceInvoiceReviewRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
@@ -103,12 +118,14 @@ export interface FileRoutesByFullPath {
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
+  '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
+  '/tools/finance/invoice-review': typeof ToolsFinanceInvoiceReviewRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
@@ -117,6 +134,7 @@ export interface FileRoutesByTo {
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
+  '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -124,6 +142,7 @@ export interface FileRoutesById {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
+  '/tools/finance/invoice-review': typeof ToolsFinanceInvoiceReviewRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
@@ -132,6 +151,7 @@ export interface FileRoutesById {
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
+  '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,6 +160,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/currency-converter'
+    | '/tools/finance/invoice-review'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
@@ -148,12 +169,14 @@ export interface FileRouteTypes {
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
+    | '/tools/sales/payment-due-date'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/currency-converter'
+    | '/tools/finance/invoice-review'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
@@ -162,12 +185,14 @@ export interface FileRouteTypes {
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
+    | '/tools/sales/payment-due-date'
   id:
     | '__root__'
     | '/'
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/currency-converter'
+    | '/tools/finance/invoice-review'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
@@ -176,6 +201,7 @@ export interface FileRouteTypes {
     | '/tools/sales/commission-calculator'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
+    | '/tools/sales/payment-due-date'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,6 +209,7 @@ export interface RootRouteChildren {
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsFinanceCompanyLookupRoute: typeof ToolsFinanceCompanyLookupRoute
   ToolsFinanceCurrencyConverterRoute: typeof ToolsFinanceCurrencyConverterRoute
+  ToolsFinanceInvoiceReviewRoute: typeof ToolsFinanceInvoiceReviewRoute
   ToolsFinanceLoanCalculatorRoute: typeof ToolsFinanceLoanCalculatorRoute
   ToolsFinancePaymentDueDateRoute: typeof ToolsFinancePaymentDueDateRoute
   ToolsFinanceVatCalculatorRoute: typeof ToolsFinanceVatCalculatorRoute
@@ -191,6 +218,7 @@ export interface RootRouteChildren {
   ToolsSalesCommissionCalculatorRoute: typeof ToolsSalesCommissionCalculatorRoute
   ToolsSalesDiscountCalculatorRoute: typeof ToolsSalesDiscountCalculatorRoute
   ToolsSalesMarginMarkupRoute: typeof ToolsSalesMarginMarkupRoute
+  ToolsSalesPaymentDueDateRoute: typeof ToolsSalesPaymentDueDateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -221,6 +249,13 @@ declare module '@tanstack/react-router' {
       path: '/tools/finance/currency-converter'
       fullPath: '/tools/finance/currency-converter'
       preLoaderRoute: typeof ToolsFinanceCurrencyConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/finance/invoice-review': {
+      id: '/tools/finance/invoice-review'
+      path: '/tools/finance/invoice-review'
+      fullPath: '/tools/finance/invoice-review'
+      preLoaderRoute: typeof ToolsFinanceInvoiceReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/finance/loan-calculator': {
@@ -279,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsSalesMarginMarkupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/sales/payment-due-date': {
+      id: '/tools/sales/payment-due-date'
+      path: '/tools/sales/payment-due-date'
+      fullPath: '/tools/sales/payment-due-date'
+      preLoaderRoute: typeof ToolsSalesPaymentDueDateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -287,6 +329,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsFinanceCompanyLookupRoute: ToolsFinanceCompanyLookupRoute,
   ToolsFinanceCurrencyConverterRoute: ToolsFinanceCurrencyConverterRoute,
+  ToolsFinanceInvoiceReviewRoute: ToolsFinanceInvoiceReviewRoute,
   ToolsFinanceLoanCalculatorRoute: ToolsFinanceLoanCalculatorRoute,
   ToolsFinancePaymentDueDateRoute: ToolsFinancePaymentDueDateRoute,
   ToolsFinanceVatCalculatorRoute: ToolsFinanceVatCalculatorRoute,
@@ -295,6 +338,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsSalesCommissionCalculatorRoute: ToolsSalesCommissionCalculatorRoute,
   ToolsSalesDiscountCalculatorRoute: ToolsSalesDiscountCalculatorRoute,
   ToolsSalesMarginMarkupRoute: ToolsSalesMarginMarkupRoute,
+  ToolsSalesPaymentDueDateRoute: ToolsSalesPaymentDueDateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

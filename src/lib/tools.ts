@@ -2,7 +2,8 @@ export type ToolHref =
   | "/tools/finance/company-lookup"
   | "/tools/finance/vat-calculator"
   | "/tools/finance/loan-calculator"
-  | "/tools/finance/payment-due-date"
+  | "/tools/sales/payment-due-date"
+  | "/tools/finance/invoice-review"
   | "/tools/finance/currency-converter"
   | "/tools/hr/working-days"
   | "/tools/hr/vacation-tracker"
@@ -30,9 +31,8 @@ export const categories: Category[] = [
       { name: "ANAF Company Lookup", description: "Bulk CUIs and EU VAT numbers, ANAF details and VIES validation.", live: true, href: "/tools/finance/company-lookup" },
       { name: "Gross / Net / VAT Calculator", description: "Any VAT rate, plus AI invoice reading.", live: true, href: "/tools/finance/vat-calculator" },
       { name: "Invoice Generator", description: "Create clean PDF invoices in seconds." },
-      { name: "Invoice Review & Assignments", description: "Review invoice lines and assign accounts, cost and profit centers." },
-      { name: "Export Profiles (ERP / IFS)", description: "Configurable export layouts for your accounting software." },
-      { name: "Payment Due Date & Late Penalties", description: "Due dates and contractual penalties with partial payments.", live: true, href: "/tools/finance/payment-due-date" },
+      { name: "Invoice Review & Assignments", description: "Review invoice lines and assign accounts, cost and profit centers.", live: true, href: "/tools/finance/invoice-review" },
+      { name: "Export Profiles (ERP / IFS)", description: "Configurable export layouts for your accounting software.", live: true, href: "/tools/finance/invoice-review" },
       { name: "PFA vs SRL / Dividend vs Salary", description: "Compare business forms and ways to pay yourself." },
     ],
   },
@@ -56,6 +56,7 @@ export const categories: Category[] = [
     icon: "↗",
     tools: [
       { name: "Margin & Markup", description: "Convert between margin, markup and price.", live: true, href: "/tools/sales/margin-markup" },
+      { name: "Payment Due Date & Late Penalties", description: "Due dates and contractual penalties with partial payments.", live: true, href: "/tools/sales/payment-due-date" },
       { name: "Discount Calculator", description: "Stacked discounts and final prices.", live: true, href: "/tools/sales/discount-calculator" },
       { name: "Company Lookup", description: "Fetch company data from public registries." },
       { name: "Commission Calculator", description: "Tiered commission payouts.", live: true, href: "/tools/sales/commission-calculator" },
