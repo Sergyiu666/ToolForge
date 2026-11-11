@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 import { Route as ToolsFinanceCompanyLookupRouteImport } from './routes/tools.finance.company-lookup'
 import { Route as ToolsFinanceCurrencyConverterRouteImport } from './routes/tools.finance.currency-converter'
+import { Route as ToolsFinanceInvoiceReviewRouteImport } from './routes/tools.finance.invoice-review'
 import { Route as ToolsFinanceLoanCalculatorRouteImport } from './routes/tools.finance.loan-calculator'
 import { Route as ToolsFinancePaymentDueDateRouteImport } from './routes/tools.finance.payment-due-date'
 import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.finance.vat-calculator'
@@ -42,6 +43,12 @@ const ToolsFinanceCurrencyConverterRoute =
   ToolsFinanceCurrencyConverterRouteImport.update({
     id: '/tools/finance/currency-converter',
     path: '/tools/finance/currency-converter',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ToolsFinanceInvoiceReviewRoute =
+  ToolsFinanceInvoiceReviewRouteImport.update({
+    id: '/tools/finance/invoice-review',
+    path: '/tools/finance/invoice-review',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ToolsFinanceLoanCalculatorRoute =
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
+  '/tools/finance/invoice-review': typeof ToolsFinanceInvoiceReviewRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
@@ -109,6 +117,7 @@ export interface FileRoutesByTo {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
+  '/tools/finance/invoice-review': typeof ToolsFinanceInvoiceReviewRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
@@ -124,6 +133,7 @@ export interface FileRoutesById {
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/finance/company-lookup': typeof ToolsFinanceCompanyLookupRoute
   '/tools/finance/currency-converter': typeof ToolsFinanceCurrencyConverterRoute
+  '/tools/finance/invoice-review': typeof ToolsFinanceInvoiceReviewRoute
   '/tools/finance/loan-calculator': typeof ToolsFinanceLoanCalculatorRoute
   '/tools/finance/payment-due-date': typeof ToolsFinancePaymentDueDateRoute
   '/tools/finance/vat-calculator': typeof ToolsFinanceVatCalculatorRoute
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/currency-converter'
+    | '/tools/finance/invoice-review'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/currency-converter'
+    | '/tools/finance/invoice-review'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
@@ -168,6 +180,7 @@ export interface FileRouteTypes {
     | '/tools/$category'
     | '/tools/finance/company-lookup'
     | '/tools/finance/currency-converter'
+    | '/tools/finance/invoice-review'
     | '/tools/finance/loan-calculator'
     | '/tools/finance/payment-due-date'
     | '/tools/finance/vat-calculator'
@@ -183,6 +196,7 @@ export interface RootRouteChildren {
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsFinanceCompanyLookupRoute: typeof ToolsFinanceCompanyLookupRoute
   ToolsFinanceCurrencyConverterRoute: typeof ToolsFinanceCurrencyConverterRoute
+  ToolsFinanceInvoiceReviewRoute: typeof ToolsFinanceInvoiceReviewRoute
   ToolsFinanceLoanCalculatorRoute: typeof ToolsFinanceLoanCalculatorRoute
   ToolsFinancePaymentDueDateRoute: typeof ToolsFinancePaymentDueDateRoute
   ToolsFinanceVatCalculatorRoute: typeof ToolsFinanceVatCalculatorRoute
@@ -221,6 +235,13 @@ declare module '@tanstack/react-router' {
       path: '/tools/finance/currency-converter'
       fullPath: '/tools/finance/currency-converter'
       preLoaderRoute: typeof ToolsFinanceCurrencyConverterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/finance/invoice-review': {
+      id: '/tools/finance/invoice-review'
+      path: '/tools/finance/invoice-review'
+      fullPath: '/tools/finance/invoice-review'
+      preLoaderRoute: typeof ToolsFinanceInvoiceReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/finance/loan-calculator': {
@@ -287,6 +308,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsFinanceCompanyLookupRoute: ToolsFinanceCompanyLookupRoute,
   ToolsFinanceCurrencyConverterRoute: ToolsFinanceCurrencyConverterRoute,
+  ToolsFinanceInvoiceReviewRoute: ToolsFinanceInvoiceReviewRoute,
   ToolsFinanceLoanCalculatorRoute: ToolsFinanceLoanCalculatorRoute,
   ToolsFinancePaymentDueDateRoute: ToolsFinancePaymentDueDateRoute,
   ToolsFinanceVatCalculatorRoute: ToolsFinanceVatCalculatorRoute,

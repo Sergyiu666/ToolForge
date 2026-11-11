@@ -17,3 +17,6 @@
 - Payment due-date arithmetic lives in a client-safe tested helper using UTC calendar days and user-entered contractual rates; it never assumes statutory penalty rates.
 - VIES validation is independent of ANAF VAT status and historical ANAF dates; combined lookups process five IDs per invocation so one ANAF call plus five VIES calls stays within the outbound connection budget.
 - Romanian holiday presets are bounded to verified calendar years, support Orthodox and Western Christian dates, and deduplicate overlaps with user-entered holidays to avoid double-counting.
+- Invoice review uses client-side UBL parsing and event-loaded SheetJS, with explicit local saves and a validated session handoff from the AI reader, so local intake works independently of external gateways.
+- Invoice allocations require approved valid account codes and 100% splits; export preserves cent totals and uses editable IFS staging column mappings rather than assuming an installation-specific posting format.
+- The bundled OMFP account catalog is a dated consolidated reference with source attribution; imported account lists replace it only after confirmation so organizational codes remain authoritative.

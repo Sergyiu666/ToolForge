@@ -8,8 +8,12 @@ describe("tool catalog scope", () => {
   });
   it("every live tool has a destination", () => {
     const live = categories.flatMap(category => category.tools).filter(tool => tool.live);
-    expect(live).toHaveLength(10);
+    expect(live).toHaveLength(12);
     expect(live.every(tool => tool.href)).toBe(true);
-    expect(categories.map(category => category.tools.length)).toEqual([9, 5, 4]);
+    expect(categories.map(category => category.tools.length)).toEqual([8, 5, 5]);
+  });
+  it('places late penalties in Sales, not Finance', () => {
+    expect(getCategory('sales')?.tools.find(t => t.href === '/tools/sales/payment-due-date')?.live).toBe(true);
+    expect(getCategory('finance')?.tools.some(t => t.name === 'Payment Due Date & Late Penalties')).toBe(false);
   });
 });
