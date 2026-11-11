@@ -23,7 +23,20 @@ export function InvoiceReview() {
   const [pending, setPending] = useState<{ sheets: SheetData[]; target: ImportTarget } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const targetRef = useRef<ImportTarget>('invoice');
-  useEffect(() => { try { const raw = localStorage.getItem(storageKey); if (raw) { const parsed = workspaceSchema.safeParse(JSON.parse(raw)); if (parsed.success) { setW(parsed.data); setSaved(true); } else setError('Saved workspace is invalid. Start a new invoice or clear the saved copy.'); } } catch { setError('Browser storage is unavailable. You can still review and export.'); } }, []);
+  useEffect(() => {
+    try {
+      let restored = initialWorkspace();
+      const raw = localStorage.getItem(storageKey);
+      if (raw) { const parsed = workspaceSchema.safeParse(JSON.parse(raw)); if (parsed.success) { restored = parsed.data; setSaved(true); } else setError('Saved workspace is invalid. Start a new invoice or clear the saved copy.'); }
+      const handoff = sessionStorage.getItem('toolforge-invoice-handoff');
+      if (handoff) {
+        const next = workspaceSchema.safeParse({ ...restored, invoice: JSON.parse(handoff) });
+        if (next.success && (!restored.invoice.lines.length || window.confirm('Replace the saved invoice with the AI reader items?'))) { restored = next.data; setSaved(false); }
+        sessionStorage.removeItem('toolforge-invoice-handoff');
+      }
+      setW(restored);
+    } catch { setError('Browser storage is unavailable. You can still review and export.'); }
+  }, []);
   const change = (f: (w: Workspace) => Workspace) => { setW(f); setSaved(false); };
   const invoice = w.invoice;
   const issues = reviewIssues(w);
