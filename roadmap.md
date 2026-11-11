@@ -18,6 +18,7 @@
 - Vacation day tracker
 
 ## Next (pending credits / user go-ahead)
-- Chart of accounts import + cost center assignment in invoice review
+- [IN PROGRESS] Phase 3: local XML/spreadsheet invoice review, OMFP accounts, cost/profit centers, percentage splits, IFS export profiles
+- [IN PROGRESS] Move payment due date and late penalties to Sales
 - Language switch (EN/RO)
 - [HOLD] Salary, overtime/night pay, PFA vs SRL (need official rates from user)
