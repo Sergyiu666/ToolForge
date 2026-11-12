@@ -9,7 +9,8 @@ export type ToolHref =
   | "/tools/hr/vacation-tracker"
   | "/tools/sales/margin-markup"
   | "/tools/sales/discount-calculator"
-  | "/tools/sales/commission-calculator";
+  | "/tools/sales/commission-calculator"
+  | "/tools/sales/company-insights";
 export type Tool = { name: string; description: string; live?: boolean; href?: ToolHref };
 export type Category = {
   slug: string;
@@ -58,7 +59,7 @@ export const categories: Category[] = [
       { name: "Margin & Markup", description: "Convert between margin, markup and price.", live: true, href: "/tools/sales/margin-markup" },
       { name: "Payment Due Date & Late Penalties", description: "Due dates and contractual penalties with partial payments.", live: true, href: "/tools/sales/payment-due-date" },
       { name: "Discount Calculator", description: "Stacked discounts and final prices.", live: true, href: "/tools/sales/discount-calculator" },
-      { name: "Company Lookup", description: "Fetch company data from public registries." },
+      { name: "Company Due Diligence", description: "Fiscal status, 5-year financials, court cases and a CRM brief.", live: true, href: "/tools/sales/company-insights" },
       { name: "Commission Calculator", description: "Tiered commission payouts.", live: true, href: "/tools/sales/commission-calculator" },
     ],
   },
