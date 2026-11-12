@@ -20,6 +20,7 @@ import { Route as ToolsFinanceVatCalculatorRouteImport } from './routes/tools.fi
 import { Route as ToolsHrVacationTrackerRouteImport } from './routes/tools.hr.vacation-tracker'
 import { Route as ToolsHrWorkingDaysRouteImport } from './routes/tools.hr.working-days'
 import { Route as ToolsSalesCommissionCalculatorRouteImport } from './routes/tools.sales.commission-calculator'
+import { Route as ToolsSalesCompanyInsightsRouteImport } from './routes/tools.sales.company-insights'
 import { Route as ToolsSalesDiscountCalculatorRouteImport } from './routes/tools.sales.discount-calculator'
 import { Route as ToolsSalesMarginMarkupRouteImport } from './routes/tools.sales.margin-markup'
 import { Route as ToolsSalesPaymentDueDateRouteImport } from './routes/tools.sales.payment-due-date'
@@ -86,6 +87,12 @@ const ToolsSalesCommissionCalculatorRoute =
     path: '/tools/sales/commission-calculator',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ToolsSalesCompanyInsightsRoute =
+  ToolsSalesCompanyInsightsRouteImport.update({
+    id: '/tools/sales/company-insights',
+    path: '/tools/sales/company-insights',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ToolsSalesDiscountCalculatorRoute =
   ToolsSalesDiscountCalculatorRouteImport.update({
     id: '/tools/sales/discount-calculator',
@@ -116,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/tools/hr/vacation-tracker': typeof ToolsHrVacationTrackerRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
+  '/tools/sales/company-insights': typeof ToolsSalesCompanyInsightsRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
   '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/tools/hr/vacation-tracker': typeof ToolsHrVacationTrackerRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
+  '/tools/sales/company-insights': typeof ToolsSalesCompanyInsightsRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
   '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
@@ -149,6 +158,7 @@ export interface FileRoutesById {
   '/tools/hr/vacation-tracker': typeof ToolsHrVacationTrackerRoute
   '/tools/hr/working-days': typeof ToolsHrWorkingDaysRoute
   '/tools/sales/commission-calculator': typeof ToolsSalesCommissionCalculatorRoute
+  '/tools/sales/company-insights': typeof ToolsSalesCompanyInsightsRoute
   '/tools/sales/discount-calculator': typeof ToolsSalesDiscountCalculatorRoute
   '/tools/sales/margin-markup': typeof ToolsSalesMarginMarkupRoute
   '/tools/sales/payment-due-date': typeof ToolsSalesPaymentDueDateRoute
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/tools/hr/vacation-tracker'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
+    | '/tools/sales/company-insights'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
     | '/tools/sales/payment-due-date'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/tools/hr/vacation-tracker'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
+    | '/tools/sales/company-insights'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
     | '/tools/sales/payment-due-date'
@@ -199,6 +211,7 @@ export interface FileRouteTypes {
     | '/tools/hr/vacation-tracker'
     | '/tools/hr/working-days'
     | '/tools/sales/commission-calculator'
+    | '/tools/sales/company-insights'
     | '/tools/sales/discount-calculator'
     | '/tools/sales/margin-markup'
     | '/tools/sales/payment-due-date'
@@ -216,6 +229,7 @@ export interface RootRouteChildren {
   ToolsHrVacationTrackerRoute: typeof ToolsHrVacationTrackerRoute
   ToolsHrWorkingDaysRoute: typeof ToolsHrWorkingDaysRoute
   ToolsSalesCommissionCalculatorRoute: typeof ToolsSalesCommissionCalculatorRoute
+  ToolsSalesCompanyInsightsRoute: typeof ToolsSalesCompanyInsightsRoute
   ToolsSalesDiscountCalculatorRoute: typeof ToolsSalesDiscountCalculatorRoute
   ToolsSalesMarginMarkupRoute: typeof ToolsSalesMarginMarkupRoute
   ToolsSalesPaymentDueDateRoute: typeof ToolsSalesPaymentDueDateRoute
@@ -300,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsSalesCommissionCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/sales/company-insights': {
+      id: '/tools/sales/company-insights'
+      path: '/tools/sales/company-insights'
+      fullPath: '/tools/sales/company-insights'
+      preLoaderRoute: typeof ToolsSalesCompanyInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/sales/discount-calculator': {
       id: '/tools/sales/discount-calculator'
       path: '/tools/sales/discount-calculator'
@@ -336,6 +357,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsHrVacationTrackerRoute: ToolsHrVacationTrackerRoute,
   ToolsHrWorkingDaysRoute: ToolsHrWorkingDaysRoute,
   ToolsSalesCommissionCalculatorRoute: ToolsSalesCommissionCalculatorRoute,
+  ToolsSalesCompanyInsightsRoute: ToolsSalesCompanyInsightsRoute,
   ToolsSalesDiscountCalculatorRoute: ToolsSalesDiscountCalculatorRoute,
   ToolsSalesMarginMarkupRoute: ToolsSalesMarginMarkupRoute,
   ToolsSalesPaymentDueDateRoute: ToolsSalesPaymentDueDateRoute,
