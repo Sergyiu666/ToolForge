@@ -8,7 +8,7 @@ describe("tool catalog scope", () => {
   });
   it("every live tool has a destination", () => {
     const live = categories.flatMap(category => category.tools).filter(tool => tool.live);
-    expect(live).toHaveLength(12);
+    expect(live).toHaveLength(13);
     expect(live.every(tool => tool.href)).toBe(true);
     expect(categories.map(category => category.tools.length)).toEqual([8, 5, 5]);
   });

@@ -20,3 +20,4 @@
 - Invoice review uses client-side UBL parsing and event-loaded SheetJS, with explicit local saves and a validated session handoff from the AI reader, so local intake works independently of external gateways.
 - Invoice allocations require approved valid account codes and 100% splits; export preserves cent totals and uses editable IFS staging column mappings rather than assuming an installation-specific posting format.
 - The bundled OMFP account catalog is a dated consolidated reference with source attribution; imported account lists replace it only after confirmation so organizational codes remain authoritative.
+- Company due diligence reads only public official sources (ANAF fiscal + bilant, portal.just.ro); administrator names are user-supplied because ANAF/ONRC do not expose them free, and person name matches are labeled potential.
