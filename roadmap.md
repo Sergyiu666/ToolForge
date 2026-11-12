@@ -17,8 +17,16 @@
 - BNR currency converter (official rates, any date)
 - Vacation day tracker
 
-## Next (pending credits / user go-ahead)
-- [IN PROGRESS] Phase 3: local XML/spreadsheet invoice review, OMFP accounts, cost/profit centers, percentage splits, IFS export profiles
-- [IN PROGRESS] Move payment due date and late penalties to Sales
-- Language switch (EN/RO)
+## Phase 3 (complete)
+- Invoice review & IFS export; payment due date moved to Sales
+
+## Phase 8 (complete)
+- Sales Company Due Diligence: ANAF status, 5-year ANAF financials, portal.just.ro court cases, admin name search, CRM brief
+
+## Next (in order)
+- Phase 4: Language switch (EN/RO)
+- Phase 6: Gross-to-net salary, overtime/night pay
+- Phase 7: PFA vs SRL simulator
+- Phase 5: Invoice generator (may be scrapped)
+- Phase 8b: Audit & fix earlier phases
 - [HOLD] Salary, overtime/night pay, PFA vs SRL (need official rates from user)

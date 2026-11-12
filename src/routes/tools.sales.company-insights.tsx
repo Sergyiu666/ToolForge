@@ -55,7 +55,7 @@ function Page() {
       `${c.name} (CUI ${c.cui}, ${c.registry || 'reg. no. n/a'})`, `Address: ${c.address || '—'}`,
       `Fiscal status: ${c.fiscal || '—'} · VAT payer: ${yesNo(c.vat)} · VAT on cash: ${yesNo(c.cashVat)} · e-Factura: ${yesNo(c.eInvoice)}`,
       last ? `FY${last.year}: turnover ${lei(last.turnover)} ${pct(growth(last.turnover, prev?.turnover ?? null))}, net result ${lei(netResult(last))}, employees ${last.employees ?? '—'}, debts ${lei(last.debts)}` : 'No published financial statements found.',
-      ...searches.filter(s => !s.loading).map(s => `Court cases (${s.kind === 'company' ? 'company' : 'potential, name match'} "${s.name}"): ${s.error ? 'unavailable' : `${s.total}, insolvency-related ${s.cases.filter(isInsolvency).length}`}`),
+      ...searches.filter(s => !s.loading).map(s => `Court cases (${s.kind === 'company' ? 'company' : 'potential, name match'} "${s.name}"): ${s.error ? 'unavailable' : `${s.total}, insolvency cases (any role) ${s.cases.filter(isInsolvency).length}`}`),
       `Sources: ANAF, portal.just.ro · ${new Date().toISOString().slice(0, 10)}`,
     ];
     return lines.join('\n');
@@ -119,7 +119,7 @@ function CaseList({ s }: { s: Cases }) {
     <section>
       <h3 className="font-display text-lg font-semibold">Court cases — {s.name} {s.kind === 'person' && <span className="text-xs font-normal text-muted-foreground">(potential matches)</span>}</h3>
       {s.loading ? <p className="mt-2 text-sm text-muted-foreground">Searching the courts portal… this can take up to 30 seconds.</p> : s.error ? <p className="mt-2 text-sm text-destructive">{s.error}</p> : <>
-        <p className="mt-1 text-sm">{s.total} case(s) found{ins > 0 && <span className="text-destructive"> · {ins} insolvency-related</span>}{s.total > s.cases.length && ` (showing latest ${s.cases.length})`}</p>
+        <p className="mt-1 text-sm">{s.total} case(s) found{ins > 0 && <span className="text-destructive"> · {ins} insolvency cases (check role: debtor or creditor)</span>}{s.total > s.cases.length && ` (showing latest ${s.cases.length})`}</p>
         <div className="mt-2 space-y-2">{shown.map(k => <div key={k.number + k.court} className={`rounded-lg border p-3 text-sm ${isInsolvency(k) ? 'border-destructive/60' : ''}`}>
           <div className="flex flex-wrap justify-between gap-2"><span className="font-semibold">{k.number}</span><span className="text-muted-foreground">{k.date} · {k.court}</span></div>
           <div className="mt-1">{k.subject || '—'}</div>
