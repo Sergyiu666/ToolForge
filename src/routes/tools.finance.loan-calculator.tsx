@@ -1,3 +1,4 @@
+import { useI18n } from "@/components/LanguageProvider";
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, FileSpreadsheet } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/tools/finance/loan-calculator")({
 });
 
 function Page() {
+  const { t } = useI18n();
   const [p, setP] = useState("100000");
   const [r, setR] = useState("");
   const [m, setM] = useState("60");
@@ -21,7 +23,7 @@ function Page() {
 
   const download = async (format: "csv" | "xlsx") => {
     if (!res) return;
-    const headers = ["Month", "Payment", "Interest", "Principal", "Balance"];
+    const headers = [t("Month"), t("Payment"), t("Interest"), t("Principal"), t("Balance")];
     const rows = res.rows.map((x) => [String(x.month), x.payment.toFixed(2), x.interest.toFixed(2), x.principal.toFixed(2), x.balance.toFixed(2)]);
     if (format === "xlsx") {
       const XLSX = await import("xlsx");
@@ -38,22 +40,22 @@ function Page() {
   };
 
   return (
-    <ToolPage category="finance" categoryName="Finance & Accounting" title="Loan Calculator" intro="Enter the amount, yearly interest and number of months.">
+    <ToolPage category="finance" categoryName={t("Finance & Accounting")} title={t("Loan Calculator")} intro={t("Enter the amount, yearly interest and number of months.")}>
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Loan amount" value={p} onChange={setP} />
-        <Field label="Yearly interest (%)" value={r} onChange={setR} placeholder="e.g. 7.5" />
-        <Field label="Months" value={m} onChange={setM} />
+        <Field label={t("Loan amount")} value={p} onChange={setP} />
+        <Field label={t("Yearly interest (%)")} value={r} onChange={setR} placeholder="e.g. 7.5" />
+        <Field label={t("Months")} value={m} onChange={setM} />
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
-        <Stat label="Monthly payment" value={res ? fmt(res.payment) : "—"} />
-        <Stat label="Total interest" value={res ? fmt(res.totalPaid - num(p)) : "—"} />
-        <Stat label="Total paid" value={res ? fmt(res.totalPaid) : "—"} />
+        <Stat label={t("Monthly payment")} value={res ? fmt(res.payment) : "—"} />
+        <Stat label={t("Total interest")} value={res ? fmt(res.totalPaid - num(p)) : "—"} />
+        <Stat label={t("Total paid")} value={res ? fmt(res.totalPaid) : "—"} />
       </div>
       {res && (
         <div className="mt-6 max-h-96 overflow-auto rounded-xl border">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-secondary text-left text-xs uppercase text-muted-foreground">
-              <tr><th className="p-2">Month</th><th className="p-2 text-right">Payment</th><th className="p-2 text-right">Interest</th><th className="p-2 text-right">Principal</th><th className="p-2 text-right">Balance</th></tr>
+              <tr><th className="p-2">{t("Month")}</th><th className="p-2 text-right">{t("Payment")}</th><th className="p-2 text-right">{t("Interest")}</th><th className="p-2 text-right">{t("Principal")}</th><th className="p-2 text-right">{t("Balance")}</th></tr>
             </thead>
             <tbody>
               {res.rows.map((x) => (
@@ -66,10 +68,10 @@ function Page() {
       {res && (
         <div className="mt-4 flex gap-2">
           <button onClick={() => void download("csv")} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium hover:border-primary">
-            <Download className="size-4" /> Export CSV
+            <Download className="size-4" />  {t("Export CSV")}
           </button>
           <button onClick={() => void download("xlsx")} className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium hover:border-primary">
-            <FileSpreadsheet className="size-4" /> Export Excel
+            <FileSpreadsheet className="size-4" />  {t("Export Excel")}
           </button>
         </div>
       )}

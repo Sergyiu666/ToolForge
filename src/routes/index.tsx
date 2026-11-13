@@ -1,3 +1,4 @@
+import { useI18n } from "@/components/LanguageProvider";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/SiteShell";
 import { categories } from "@/lib/tools";
@@ -17,14 +18,15 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { t } = useI18n();
   return (
     <SiteShell>
       <section className="mx-auto max-w-6xl px-6 pb-10 pt-16">
         <h1 className="font-display text-5xl font-bold">Tool<span className="text-gradient">forge</span></h1>
-        <p className="mt-4 text-lg text-muted-foreground">Finance & Accounting · HR · Sales</p>
+        <p className="mt-4 text-lg text-muted-foreground">{t("Finance & Accounting · HR · Sales")}</p>
       </section>
 
-      <section aria-label="Tool categories" className="mx-auto max-w-6xl px-6 pb-28">
+      <section aria-label={t("Tool categories")} className="mx-auto max-w-6xl px-6 pb-28">
         <div className="grid gap-5 md:grid-cols-3">
           {categories.map((c) => (
             <Link

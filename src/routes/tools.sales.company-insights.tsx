@@ -1,3 +1,4 @@
+import { useI18n } from "@/components/LanguageProvider";
 import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useState } from 'react';
@@ -20,6 +21,7 @@ const pct = (n: number | null) => n === null ? '' : `${n >= 0 ? '+' : ''}${n.toF
 const yesNo = (b: boolean | null) => b === null ? 'Unknown' : b ? 'Yes' : 'No';
 
 function Page() {
+  const { t } = useI18n();
   const profileFn = useServerFn(companyProfileFn), casesFn = useServerFn(courtCasesFn);
   const [cui, setCui] = useState(''), [admins, setAdmins] = useState('');
   const [loading, setLoading] = useState(false), [error, setError] = useState('');
@@ -65,10 +67,10 @@ function Page() {
   }
 
   return (
-    <ToolPage category="sales" categoryName="Sales" title="Company Due Diligence" intro="Check a Romanian company before you sell: fiscal status, 5-year financials and public court cases, with a copy-ready CRM brief.">
+    <ToolPage category="sales" categoryName={t("Sales")} title={t("Company Due Diligence")} intro={t("Check a Romanian company before you sell: fiscal status, 5-year financials and public court cases, with a copy-ready CRM brief.")}>
       <div className="flex flex-col gap-3 sm:flex-row">
-        <input value={cui} onChange={e => setCui(e.target.value)} onKeyDown={e => e.key === 'Enter' && run()} placeholder="CUI, e.g. 14399840" className="flex-1 rounded-xl border bg-input/30 px-4 py-3 text-lg outline-none focus:border-primary" />
-        <Button onClick={run} disabled={loading} className="btn-glow h-auto py-3">{loading ? 'Checking…' : 'Check company'}</Button>
+        <input value={cui} onChange={e => setCui(e.target.value)} onKeyDown={e => e.key === 'Enter' && run()} placeholder={t("CUI, e.g. 14399840")} className="flex-1 rounded-xl border bg-input/30 px-4 py-3 text-lg outline-none focus:border-primary" />
+        <Button onClick={run} disabled={loading} className="btn-glow h-auto py-3">{loading ? t("Checking…") : t("Check company")}</Button>
       </div>
       {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
 
@@ -76,55 +78,56 @@ function Page() {
         <section>
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div><h2 className="font-display text-2xl font-semibold">{c.name}</h2><p className="text-sm text-muted-foreground">CUI {c.cui} · {c.registry || '—'}</p><p className="mt-1 text-sm">{c.address}</p></div>
-            <Button variant="outline" onClick={copyBrief}>Copy CRM brief</Button>
+            <Button variant="outline" onClick={copyBrief}>{t("Copy CRM brief")}</Button>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[['Fiscal status', c.fiscal || '—'], ['VAT payer', yesNo(c.vat)], ['VAT on cash', yesNo(c.cashVat)], ['e-Factura', yesNo(c.eInvoice)]].map(([k, v]) =>
+            {[[t("Fiscal status"), c.fiscal || '—'], [t("VAT payer"), yesNo(c.vat)], [t("VAT on cash"), yesNo(c.cashVat)], ['e-Factura', yesNo(c.eInvoice)]].map(([k, v]) =>
               <div key={k} className={`rounded-xl p-3 ${k === 'Fiscal status' && /inactiv/i.test(v!) ? 'bg-destructive/20' : 'bg-secondary'}`}><div className="text-xs uppercase text-muted-foreground">{k}</div><div className="mt-1 font-semibold">{v}</div></div>)}
           </div>
         </section>
 
         <section>
-          <h3 className="font-display text-lg font-semibold">Financial trend (ANAF published statements)</h3>
-          {fy.length === 0 ? <p className="mt-2 text-sm text-muted-foreground">No published financial statements for the last five years.</p> :
-            <div className="mt-3 overflow-x-auto"><table className="w-full text-sm"><thead className="text-left text-muted-foreground"><tr>{['Year', 'Turnover', 'Net result', 'Employees', 'Debts', 'Equity', 'Cash'].map(h => <th key={h} className="py-2 pr-4 font-medium">{h}</th>)}</tr></thead>
+          <h3 className="font-display text-lg font-semibold">{t("Financial trend (ANAF published statements)")}</h3>
+          {fy.length === 0 ? <p className="mt-2 text-sm text-muted-foreground">{t("No published financial statements for the last five years.")}</p> :
+            <div className="mt-3 overflow-x-auto"><table className="w-full text-sm"><thead className="text-left text-muted-foreground"><tr>{[t("Year"), t("Turnover"), t("Net result"), t("Employees"), t("Debts"), t("Equity"), t("Cash")].map(h => <th key={h} className="py-2 pr-4 font-medium">{h}</th>)}</tr></thead>
               <tbody>{fy.map((f: FinancialYear, i) => { const prev = fy[i + 1], nr = netResult(f), g = growth(f.turnover, prev?.turnover ?? null); return (
                 <tr key={f.year} className="border-t"><td className="py-2 pr-4 font-semibold">{f.year}</td>
                   <td className="py-2 pr-4 whitespace-nowrap">{lei(f.turnover)} {g !== null && <span className={g >= 0 ? 'text-primary' : 'text-destructive'}>{pct(g)}</span>}</td>
                   <td className={`py-2 pr-4 whitespace-nowrap ${nr !== null && nr < 0 ? 'text-destructive' : ''}`}>{lei(nr)}</td>
                   <td className="py-2 pr-4">{f.employees ?? '—'}</td><td className="py-2 pr-4 whitespace-nowrap">{lei(f.debts)}</td><td className="py-2 pr-4 whitespace-nowrap">{lei(f.equity)}</td><td className="py-2 pr-4 whitespace-nowrap">{lei(f.cash)}</td></tr>); })}</tbody></table></div>}
-          {profile!.failed.length > 0 && <p className="mt-2 text-xs text-muted-foreground">ANAF did not respond for {profile!.failed.join(', ')}; retry to complete.</p>}
+          {profile!.failed.length > 0 && <p className="mt-2 text-xs text-muted-foreground">{t("ANAF did not respond for")} {profile!.failed.join(', ')}; retry to complete.</p>}
         </section>
 
         <section>
-          <h3 className="font-display text-lg font-semibold">Administrators & connections</h3>
-          <p className="mt-1 text-sm text-muted-foreground">Administrator names are not published by ANAF (ONRC data is paid). Enter names from the company's ONRC extract, one per line (max 5), to search public court cases where they appear as a party.</p>
+          <h3 className="font-display text-lg font-semibold">{t("Administrators & connections")}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{t("Administrator names are not published by ANAF (ONRC data is paid). Enter names from the company's ONRC extract, one per line (max 5), to search public court cases where they appear as a party.")}</p>
           <textarea value={admins} onChange={e => setAdmins(e.target.value)} rows={3} placeholder={'POPESCU ION\nIONESCU MARIA'} className="mt-3 w-full rounded-xl border bg-input/30 px-4 py-3 outline-none focus:border-primary" />
-          <Button variant="outline" className="mt-2" onClick={runAdmins}>Search administrators</Button>
-          <p className="mt-2 text-xs text-muted-foreground">Name matches are potential, not definitive: people with the same name may appear. Verify identity before acting on results.</p>
+          <Button variant="outline" className="mt-2" onClick={runAdmins}>{t("Search administrators")}</Button>
+          <p className="mt-2 text-xs text-muted-foreground">{t("Name matches are potential, not definitive: people with the same name may appear. Verify identity before acting on results.")}</p>
         </section>
 
         {searches.map(s => <CaseList key={s.name} s={s} />)}
-        {!companyCases && <p className="text-sm text-muted-foreground">Court search not started.</p>}
+        {!companyCases && <p className="text-sm text-muted-foreground">{t("Court search not started.")}</p>}
       </div>}
-      <p className="mt-8 text-xs text-muted-foreground">Sources: ANAF (webservicesp.anaf.ro) fiscal registry and financial statements, Portalul Instanțelor de Judecată (portal.just.ro). Read-only, nothing is stored.</p>
+      <p className="mt-8 text-xs text-muted-foreground">{t("Sources: ANAF (webservicesp.anaf.ro) fiscal registry and financial statements, Portalul Instanțelor de Judecată (portal.just.ro). Read-only, nothing is stored.")}</p>
     </ToolPage>
   );
 }
 
 function CaseList({ s }: { s: Cases }) {
+  const { t } = useI18n();
   const [all, setAll] = useState(false);
   const ins = s.cases.filter(isInsolvency).length, shown = all ? s.cases : s.cases.slice(0, 10);
   return (
     <section>
-      <h3 className="font-display text-lg font-semibold">Court cases — {s.name} {s.kind === 'person' && <span className="text-xs font-normal text-muted-foreground">(potential matches)</span>}</h3>
-      {s.loading ? <p className="mt-2 text-sm text-muted-foreground">Searching the courts portal… this can take up to 30 seconds.</p> : s.error ? <p className="mt-2 text-sm text-destructive">{s.error}</p> : <>
-        <p className="mt-1 text-sm">{s.total} case(s) found{ins > 0 && <span className="text-destructive"> · {ins} insolvency cases (check role: debtor or creditor)</span>}{s.total > s.cases.length && ` (showing latest ${s.cases.length})`}</p>
+      <h3 className="font-display text-lg font-semibold">{t("Court cases —")} {s.name} {s.kind === 'person' && <span className="text-xs font-normal text-muted-foreground">{t("(potential matches)")}</span>}</h3>
+      {s.loading ? <p className="mt-2 text-sm text-muted-foreground">{t("Searching the courts portal… this can take up to 30 seconds.")}</p> : s.error ? <p className="mt-2 text-sm text-destructive">{s.error}</p> : <>
+        <p className="mt-1 text-sm">{s.total} case(s) found{ins > 0 && <span className="text-destructive"> · {ins} insolvency cases (check role: debtor or creditor)</span>}{s.total > s.cases.length && t(" (showing latest {0})", s.cases.length)}</p>
         <div className="mt-2 space-y-2">{shown.map(k => <div key={k.number + k.court} className={`rounded-lg border p-3 text-sm ${isInsolvency(k) ? 'border-destructive/60' : ''}`}>
           <div className="flex flex-wrap justify-between gap-2"><span className="font-semibold">{k.number}</span><span className="text-muted-foreground">{k.date} · {k.court}</span></div>
           <div className="mt-1">{k.subject || '—'}</div>
-          <div className="mt-1 text-xs text-muted-foreground">{[k.category, k.stage, k.role && `as ${k.role}`, s.kind === 'person' && k.party].filter(Boolean).join(' · ')}</div></div>)}</div>
-        {s.cases.length > 10 && <Button variant="ghost" size="sm" className="mt-2" onClick={() => setAll(!all)}>{all ? 'Show fewer' : `Show all ${s.cases.length}`}</Button>}
+          <div className="mt-1 text-xs text-muted-foreground">{[k.category, k.stage, k.role && t("as {0}", k.role), s.kind === 'person' && k.party].filter(Boolean).join(' · ')}</div></div>)}</div>
+        {s.cases.length > 10 && <Button variant="ghost" size="sm" className="mt-2" onClick={() => setAll(!all)}>{all ? t("Show fewer") : t("Show all {0}", s.cases.length)}</Button>}
       </>}
     </section>
   );

@@ -37,24 +37,24 @@ export function parseInvoiceXml(xml: string): ReviewInvoice {
   if (/<!DOCTYPE|<!ENTITY/i.test(xml) || XMLValidator.validate(xml) !== true) throw new Error('Use a valid UBL invoice XML without external entities.');
   const root = new XMLParser({ ignoreAttributes: false, removeNSPrefix: true, parseTagValue: false, processEntities: false }).parse(xml);
   const doc: Node = root.Invoice ?? root.CreditNote;
-  if (!doc || !text(doc.UBLVersionID).startsWith('2.1') && text(doc.UBLVersionID)) throw new Error('Expected a UBL 2.1 Invoice or CreditNote.');
+  if (!doc || !text(doc['UBLVersionID']).startsWith('2.1') && text(doc['UBLVersionID'])) throw new Error('Expected a UBL 2.1 Invoice or CreditNote.');
   const credit = Boolean(root.CreditNote);
-  const lines = list(doc.InvoiceLine ?? doc.CreditNoteLine).map((line, i): InvoiceLine => {
-    const taxes = list(line.Item?.ClassifiedTaxCategory);
+  const lines = list(doc['InvoiceLine'] ?? doc['CreditNoteLine']).map((line, i): InvoiceLine => {
+    const taxes = list(line['Item']?.['ClassifiedTaxCategory']);
     if (taxes.length !== 1) throw new Error(`Line ${i + 1}: missing or multiple VAT categories; enter this line manually.`);
-    const rate = amount(taxes[0]?.Percent ?? '0');
+    const rate = amount(taxes[0]?.['Percent'] ?? '0');
     if (rate < 0 || rate > 100) throw new Error(`Line ${i + 1}: invalid VAT percentage.`);
-    const net = amount(line.LineExtensionAmount) * (credit ? -1 : 1);
-    return { id: `xml-${i}`, description: text(line.Item?.Name) || text(line.Item?.Description), net, vatRate: rate, vat: round(net * rate / 100), allocations: [blankAllocation()] };
+    const net = amount(line['LineExtensionAmount']) * (credit ? -1 : 1);
+    return { id: `xml-${i}`, description: text(line['Item']?.['Name']) || text(line['Item']?.['Description']), net, vatRate: rate, vat: round(net * rate / 100), allocations: [blankAllocation()] };
   });
   if (!lines.length) throw new Error('No invoice lines found.');
-  const supplier = doc.AccountingSupplierParty?.Party;
-  return { number: text(doc.ID), date: text(doc.IssueDate), vendor: text(supplier?.PartyLegalEntity?.RegistrationName) || text(supplier?.PartyName?.Name), currency: text(doc.DocumentCurrencyCode), declaredNet: doc.LegalMonetaryTotal?.LineExtensionAmount == null ? null : amount(doc.LegalMonetaryTotal.LineExtensionAmount) * (credit ? -1 : 1), lines };
+  const supplier = doc['AccountingSupplierParty']?.['Party'];
+  return { number: text(doc['ID']), date: text(doc['IssueDate']), vendor: text(supplier?.['PartyLegalEntity']?.['RegistrationName']) || text(supplier?.['PartyName']?.['Name']), currency: text(doc['DocumentCurrencyCode']), declaredNet: doc['LegalMonetaryTotal']?.['LineExtensionAmount'] == null ? null : amount(doc['LegalMonetaryTotal'].LineExtensionAmount) * (credit ? -1 : 1), lines };
 }
 
 export function invoiceFromRows(rows: Record<string, unknown>[], mapping: Record<string, string>): ReviewInvoice {
   if (!rows.length) throw new Error('The selected sheet is empty.');
-  const read = (r: Record<string, unknown>, key: string) => String(r[mapping[key]] ?? '').trim();
+  const read = (r: Record<string, unknown>, key: string) => String(r[mapping[key] ?? ''] ?? '').trim();
   const first = rows[0];
   if (!first) throw new Error('No rows found.');
   const invoice = blankInvoice();
@@ -64,7 +64,7 @@ export function invoiceFromRows(rows: Record<string, unknown>[], mapping: Record
     const net = amount(read(r, 'net'));
     const vatRate = amount(read(r, 'vatRate'));
     if (vatRate < 0 || vatRate > 100) throw new Error(`Row ${i + 1}: invalid VAT percentage.`);
-    return { id: `sheet-${i}`, description: read(r, 'description'), net, vatRate, vat: mapping.vat ? amount(read(r, 'vat')) : round(net * vatRate / 100), allocations: [blankAllocation()] };
+    return { id: `sheet-${i}`, description: read(r, 'description'), net, vatRate, vat: mapping['vat'] ? amount(read(r, 'vat')) : round(net * vatRate / 100), allocations: [blankAllocation()] };
   });
   return invoice;
 }
