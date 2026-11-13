@@ -1,3 +1,4 @@
+import { useI18n } from "@/components/LanguageProvider";
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/SiteShell";
 import { getCategory } from "@/lib/tools";
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/tools/$category")({
 });
 
 function CategoryPage() {
+  const { t } = useI18n();
   const { category } = Route.useLoaderData();
   return (
     <SiteShell>
@@ -47,7 +49,7 @@ function CategoryPage() {
               <div className="flex items-start justify-between gap-3">
                 <h2 className="font-display text-lg font-semibold">{t.name}</h2>
                 <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground">
-                  {t.live ? "Live" : "Soon"}
+                  {t.live ? t("Live") : t("Soon")}
                 </span>
               </div>
               <p className="mt-2 text-sm text-muted-foreground">{t.description}</p>

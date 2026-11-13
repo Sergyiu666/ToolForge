@@ -24,7 +24,7 @@
 - Sales Company Due Diligence: ANAF status, 5-year ANAF financials, portal.just.ro court cases, admin name search, CRM brief
 
 ## Next (in order)
-- Phase 4: Language switch (EN/RO)
+- Phase 4 (in progress): Language switch (EN/RO), Romanian default; fix invoice strict type errors first
 - Phase 6: Gross-to-net salary, overtime/night pay
 - Phase 7: PFA vs SRL simulator
 - Phase 5: Invoice generator (may be scrapped)
